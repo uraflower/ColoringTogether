@@ -1,7 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const SelectBg = () => {
+    const nickname = useLocation().state.nickname;
+    console.log(nickname);
+
     return (
         <>
             <h2>배경 선택 화면</h2>
