@@ -25,7 +25,8 @@ const Home = () => {
                 src={require("../../임시로고이미지.png")}
                 className="mb-10"
             />
-            <form method="get" action="form-action.html" className="grid gap-4">
+            <form method="get"
+                onSubmit={createRoom} className="grid gap-4">
                 <div className="grid grid-cols-3 items-center justify-items-center">
                     <label>닉네임</label>
                     <input
@@ -81,7 +82,6 @@ const Home = () => {
                     id="create-room"
                     value="방 생성"
                     className="cursor-pointer rounded-xl py-3 px-5 text-xl bg-blue-500 text-white"
-                    onSubmit={createRoom}
                 />
             </form>
         </div>
