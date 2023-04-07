@@ -11,12 +11,11 @@ const Chat = (props) => {
         receiveMessage();
     }, [])
 
-    /** message 입력 시 chat state에 message 변경 사항을 반영 */
     const onTypeMessage = (event) => {
         setChat({ ...chat, [event.target.name]: event.target.value });
     }
 
-    /** 메시지를 전송 */
+    // 메시지 전송
     const sendMessage = (event) => {
         event.preventDefault();
         const { nickname, message } = chat;
@@ -27,30 +26,21 @@ const Chat = (props) => {
         else {
             socket.emit("chat message", ({ nickname, message }));
             setChat({ nickname, message: '' });
-
         }
     }
 
-    /** 메시지를 수신 */
+    // 메시지 수신 시, "보낸 사람: 메시지 내용"(li)를 채팅 기록(ul)에 추가
     const receiveMessage = () => {
         socket.on("chat message", ({ nickname, message }) => {
-            addChat(nickname, message);
+            let chatHistory = document.getElementById('chat-history');
+            let item = document.createElement('li');
+            item.innerHTML = `<span id="nickname" style="font-weight:bold;">${nickname}</span>`;
+            item.innerHTML += `: ${message}`;
+            item.className = "py-1 text-sm";
+            chatHistory.appendChild(item);
+            chatHistory.scrollTo(0, chatHistory.scrollHeight);
             console.log(`${nickname}: ${message}`);
         })
-    }
-
-    /** 채팅 내역(메시지 기록)을 표시
-     * "닉네임: 메시지" 꼴로 표시하며, 닉네임은 bold
-     * 채팅이 입력되면 자동으로 스크롤을 내림
-    */
-    const addChat = (nickname, message) => {
-        let chatHistory = document.getElementById('chat-history');
-        let item = document.createElement('li');
-        item.innerHTML = `<span id="nickname" style="font-weight:bold;">${nickname}</span>`;
-        item.innerHTML += `: ${message}`;
-        item.className = "py-1 text-sm";
-        chatHistory.appendChild(item);
-        chatHistory.scrollTo(0, chatHistory.scrollHeight);
     }
 
     return (

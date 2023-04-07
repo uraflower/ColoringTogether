@@ -6,9 +6,7 @@ const Home = () => {
     const [nickname, setNickname] = useState("");
     const [isMulti, setIsMulti] = useState(true);
 
-    /** 방 생성 함수
-     * 방 생성 시 입력한 user nickname이 전달된다
-     */
+    // 방 생성
     const createRoom = () => {
         console.log(nickname, isMulti);
         navigate('/selectBg', {
