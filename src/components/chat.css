@@ -1,0 +1,21 @@
+#chat-history::-webkit-scrollbar {
+  width: 10px;
+}
+#chat-history::-webkit-scrollbar-thumb {
+  border: solid 2px gray;
+  border-radius: 10px;
+  background-color: white;
+}
+#chat-history::-webkit-scrollbar-track {
+  /* border: solid; */
+  border-radius: 10px;
+  background-color: gray;
+}
+
+#message {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+#message::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
