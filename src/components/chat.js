@@ -45,15 +45,15 @@ const Chat = (props) => {
 
     return (
         <div
-            className="flex flex-col fixed top-0 right-0 w-64 h-screen">
+            className="flex flex-col fixed top-4 right-4 bottom-4 w-64 overflow-hidden rounded-md shadow-[0px_0px_20px_0px_#00000014]">
             <ul
                 id="chat-history"
-                className="h-full list-none px-3 py-2 overflow-auto break-words bg-gray-200">
+                className="h-full list-none px-3 py-2 overflow-auto break-words bg-white">
             </ul>
             <form
                 id="form"
                 onSubmit={sendMessage}
-                className="flex h-24 box-border p-2 bg-blue-500">
+                className="flex h-24 box-border shadow-[0px_-5px_10px_-5px_#00000014]">
                 <textarea
                     form="form"
                     id="message"
@@ -61,11 +61,11 @@ const Chat = (props) => {
                     value={chat.message}
                     onChange={onTypeMessage}
                     maxLength="150"
-                    className="focus:outline-none flex-grow break-words resize-none px-1 text-sm" />
+                    className="focus:outline-none flex-grow break-words resize-none m-3 text-sm" />
                 <input
                     type="submit"
-                    value="Send"
-                    className="focus:outline-none ml-1 p-1 bg-red-400 cursor-pointer"
+                    value="💌"
+                    className="focus:outline-none p-2 bg-indigo-400 cursor-pointer"
                 />
             </form>
         </div>

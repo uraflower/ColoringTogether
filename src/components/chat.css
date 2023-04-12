@@ -2,14 +2,14 @@
   width: 10px;
 }
 #chat-history::-webkit-scrollbar-thumb {
-  border: solid 2px gray;
+  border: solid 2px white;
   border-radius: 10px;
-  background-color: white;
+  background-color: rgb(220, 220, 220);
 }
 #chat-history::-webkit-scrollbar-track {
   /* border: solid; */
   border-radius: 10px;
-  background-color: gray;
+  background-color: white;
 }
 
 #message {
