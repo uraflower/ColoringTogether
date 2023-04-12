@@ -45,10 +45,10 @@ const Chat = (props) => {
 
     return (
         <div
-            className="flex flex-col fixed top-4 right-4 bottom-4 w-64 overflow-hidden rounded-md shadow-[0px_0px_20px_0px_#00000014]">
+            className="flex flex-col w-64 h-[calc(100vh-4rem)] mx-6 my-8 overflow-hidden rounded-md shadow-[0px_0px_20px_0px_#00000014]">
             <ul
                 id="chat-history"
-                className="h-full list-none px-3 py-2 overflow-auto break-words bg-white">
+                className="h-full px-3 py-2 overflow-auto break-words bg-white">
             </ul>
             <form
                 id="form"
