@@ -3,11 +3,12 @@ import React from 'react';
 const BgImageSlot = (props) => {
     return (
         <div
-            id="image-slot"
-            className="border border-black w-full h-full">
+            id="image"
+            className="border border-black relative w-full
+            after:content-[''] after:block after:pb-[100%]">
             <img
                 src={props.path}
-                className="object-cover object-center w-full h-full" />
+                className="absolute object-cover object-center w-full h-full" />
         </div>
     )
 }
