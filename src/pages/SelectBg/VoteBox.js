@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 const VoteBg = () => {
     return (
         <div>
-
             <div
                 className="flex items-center justify-between">
                 <div
@@ -20,7 +19,6 @@ const VoteBg = () => {
                 className="shadow-[0px_0px_20px_0px_#00000014] rounded-2xl overflow-hidden">
                 박스
             </div>
-
         </div>
     )
 }

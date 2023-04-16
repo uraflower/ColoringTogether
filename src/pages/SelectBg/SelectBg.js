@@ -1,8 +1,8 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom';
 import Chat from '../../components/chat';
-import ExploreBg from '../../components/exploreBg';
-import VoteBg from '../../components/voteBg';
+import SelectBox from './SelectBox';
+import VoteBox from './VoteBox';
 
 const SelectBg = () => {
     const nickname = useLocation().state.nickname;
@@ -16,12 +16,12 @@ const SelectBg = () => {
                 <div
                     id="explore-bg"
                     className="h-[calc(60%-2.5rem)] my-5 bg-emerald-100">
-                    <ExploreBg />
+                    <SelectBox />
                 </div>
                 <div
                     id="vote-bg"
                     className="h-[calc(40%-2.5rem)] my-5 bg-fuchsia-100">
-                    <VoteBg />
+                    <VoteBox />
                 </div>
             </div>
             <div>

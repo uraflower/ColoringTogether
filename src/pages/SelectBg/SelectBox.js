@@ -1,7 +1,7 @@
 import React from 'react';
-import { getImageSlots } from '../utils/getImageSlots';
+import { getImageSlots } from '../../utils/getImageSlots';
 
-const ExploreBg = () => {
+const SelectBg = () => {
     const images = [
         { index: 0, path: '/assets/coloring01.jpg' },
         { index: 1, path: '/assets/coloring02.jpg' },
@@ -55,4 +55,4 @@ const ExploreBg = () => {
     )
 }
 
-export default ExploreBg;
+export default SelectBg;
