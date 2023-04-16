@@ -1,7 +1,8 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Chat from '../../components/chat';
 import ExploreBg from '../../components/exploreBg';
+import VoteBg from '../../components/voteBg';
 
 const SelectBg = () => {
     const nickname = useLocation().state.nickname;
@@ -20,8 +21,7 @@ const SelectBg = () => {
                 <div
                     id="vote-bg"
                     className="h-[calc(40%-2.5rem)] my-5 bg-fuchsia-100">
-                    <h1>배경 투표 박스</h1>
-                    <Link to="/coloring">색칠 화면으로 이동</Link>
+                    <VoteBg />
                 </div>
             </div>
             <div>

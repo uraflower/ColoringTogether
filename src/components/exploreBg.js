@@ -29,7 +29,6 @@ const ExploreBg = () => {
 
     return (
         <div
-            id="container"
             className="h-full">
             <div
                 className="text-3xl">
@@ -54,7 +53,7 @@ const ExploreBg = () => {
                     </div>
                 </div>
                 <div
-                    id="choose-image"
+                    id="choose-image-btn"
                     className="absolute bottom-0 right-0">
                     <button
                         className="px-6 py-2 text-white transition-colors duration-200 bg-indigo-400 rounded-full hover:bg-indigo-600">선택 버튼</button>
