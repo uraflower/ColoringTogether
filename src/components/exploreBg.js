@@ -1,5 +1,5 @@
 import React from 'react';
-import BgImageSlot from './bgImageSlot';
+import { getImageSlots } from '../utils/getImageSlots';
 
 const ExploreBg = () => {
     const images = [
@@ -18,14 +18,6 @@ const ExploreBg = () => {
         { index: 12, path: '/assets/coloring03.jpg' },
         { index: 13, path: '/assets/coloring04.jpg' },
     ]
-
-    const getImageSlots = () => {
-        return images.map((image) => {
-            return <BgImageSlot
-                key={image.index}
-                path={image.path} />
-        });
-    }
 
     return (
         <div
@@ -49,7 +41,7 @@ const ExploreBg = () => {
                     <div
                         id="images"
                         className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] auto-rows-auto gap-5">
-                        {getImageSlots()}
+                        {getImageSlots(images)}
                     </div>
                 </div>
                 <div

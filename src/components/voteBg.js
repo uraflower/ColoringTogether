@@ -16,7 +16,8 @@ const VoteBg = () => {
                     시작
                 </button>
             </div>
-            <div>
+            <div
+                className="shadow-[0px_0px_20px_0px_#00000014] rounded-2xl overflow-hidden">
                 박스
             </div>
 
