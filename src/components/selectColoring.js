@@ -1,7 +1,10 @@
 import React from 'react';
+import { useState } from 'react';
 import { getImageSlots } from '../utils/getImageSlots';
 
 const SelectColoring = () => {
+    const filterList = ['전체', '동물', '식물', '꽃', '풍경', '캐릭터', '두들링'];
+    const [currentFilter, setCurrentFilter] = useState(0);
     const images = [
         { index: 0, path: '/assets/coloring01.jpg' },
         { index: 1, path: '/assets/coloring02.jpg' },
@@ -19,16 +22,29 @@ const SelectColoring = () => {
         { index: 13, path: '/assets/coloring04.jpg' },
     ]
 
+
+    const createFilterButton = () => {
+        return filterList.map((el, index) => (
+            <button
+                role="tab"
+                aria-selected={currentFilter === index}
+                onClick={() => setCurrentFilter(index)}
+                className="m-2 p-1 text-sm rounded-full aria-selected:bg-indigo-400 aria-selected:text-white">
+                {el}
+            </button>
+        ))
+    }
+
     return (
         <>
             <div
                 id="filter"
-                className="px-3 bg-red-200">
-                카테고리 ex. 꽃 동물 식물 ...
+                className="w-full overflow-auto">
+                {createFilterButton()}
             </div>
             <div
                 id="gallery"
-                className="relative h-[calc(100%-4rem)] overflow-auto">
+                className="relative h-[calc(100%-6.25rem)] overflow-auto">
                 <div
                     id="images"
                     className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] auto-rows-auto gap-5">
@@ -39,7 +55,9 @@ const SelectColoring = () => {
                 id="choose-image-btn"
                 className="absolute bottom-0 right-0">
                 <button
-                    className="px-6 py-2 text-white transition-colors duration-200 bg-indigo-400 rounded-full hover:bg-indigo-600">선택 버튼</button>
+                    className="px-6 py-2 mx-3 my-2 text-white transition-colors duration-200 bg-indigo-400 rounded-full hover:bg-indigo-600">
+                    선택 버튼
+                </button>
             </div>
         </>
     )

@@ -7,7 +7,7 @@ const VoteBg = () => {
             <div
                 className="flex items-center justify-between">
                 <div
-                    className="text-3xl">
+                    className="text-3xl my-2">
                     배경 투표
                 </div>
                 <button

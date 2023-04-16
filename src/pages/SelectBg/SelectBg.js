@@ -12,15 +12,15 @@ const SelectBg = () => {
             <div className="w-64 min-w-[8rem]"></div>
             <div
                 id="center-container"
-                className="w-[calc(100%-32rem)] min-w-min max-w-screen-lg h-screen">
+                className="w-[calc(100%-32rem)] min-w-min max-w-screen-lg h-screen flex flex-col">
                 <div
                     id="explore-bg"
-                    className="h-[calc(60%-2.5rem)] my-5 bg-emerald-100">
+                    className="h-[calc(70%-4rem)] my-6">
                     <SelectBox />
                 </div>
                 <div
                     id="vote-bg"
-                    className="h-[calc(40%-2.5rem)] my-5 bg-fuchsia-100">
+                    className="h-[calc(30%-3rem)] my-6 bg-fuchsia-100">
                     <VoteBox />
                 </div>
             </div>
