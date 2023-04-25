@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import io from "socket.io-client";
+const socket = io('http://localhost:5000');
 
 const Home = () => {
     const navigate = useNavigate();
     const [nickname, setNickname] = useState("");
     const [isMulti, setIsMulti] = useState(true);
 
-    // 방 생성
-    const createRoom = () => {
+    // 참여
+    const handleSubmit = () => {
         console.log(nickname, isMulti);
-        navigate('/selectBg', {
-            state: {
-                nickname: nickname
-            }
-        });
+        socket.emit('createUser', nickname);
+        navigate('/lobby');
     }
 
     return (
@@ -24,7 +23,7 @@ const Home = () => {
                 className="mb-10"
             />
             <form method="get"
-                onSubmit={createRoom} className="grid gap-4">
+                onSubmit={handleSubmit} className="grid gap-4">
                 <div className="grid grid-cols-3 items-center justify-items-center">
                     <label>닉네임</label>
                     <input
@@ -78,7 +77,7 @@ const Home = () => {
                 <input
                     type="submit"
                     id="create-room"
-                    value="방 생성"
+                    value="참가하기"
                     className="cursor-pointer rounded-xl py-3 px-5 text-xl bg-blue-500 text-white"
                 />
             </form>
