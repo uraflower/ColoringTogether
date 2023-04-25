@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-    id: {
+const messageSchema = new mongoose.Schema({
+    user: {
         type: String,
         required: true,
         unique: true,
     },
-    nickname: {
+    message: {
         type: String,
         required: true,
     },
@@ -17,5 +17,5 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-const User = mongoose.model("User", userSchema);
-module.exports = User;
+const Message = mongoose.model("Message", messageSchema);
+module.exports = Message;
