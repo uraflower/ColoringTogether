@@ -5,11 +5,15 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "concurrently \"nodemon start\" \"cd ../ && npm start\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "socket.io": "^4.6.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1"
   }
 }
