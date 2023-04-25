@@ -1,9 +1,17 @@
-import BgImageSlot from "../components/bgImageSlot";
+import React from 'react';
 
 export const getImageSlots = (images) => {
     return images.map((image) => {
-        return <BgImageSlot
-            key={image.index}
-            path={image.path} />
+        return (
+            <div
+                id={image.index}
+                className="border border-black relative w-full after:content-[''] after:block after:pb-[100%]"
+            // onClick={}
+            >
+                <img
+                    src={image.path}
+                    className="absolute object-cover object-center w-full h-full" />
+            </div>
+        );
     });
 }
