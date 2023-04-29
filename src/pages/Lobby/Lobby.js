@@ -53,21 +53,29 @@ const Lobby = () => {
         return roomList.map((room) => (
             <li
                 key={room.id}
-                className="room-item"
+                id="room-item"
+                className="border rounded-xl border-gray-900 p-4 cursor-pointer"
                 onClick={() => handleJoinRoom(room.id)}
             >
-                <h2>{room.title}</h2>
+                <h2 className="text-lg font-semibold">{room.title}</h2>
                 <p>{room.owner.nickname}</p>
             </li>
         ));
     }, [roomList]);
 
     return (
-        <div className="room-list-container">
-            <h1>RoomList</h1>
-            <button onClick={handleCreateRoom}>방 만들기</button>
-            <div className="room-list">
-                <ul>{renderRooms}</ul>
+        <div className="h-screen flex justify-center items-center">
+            <div id="room-list-container"
+                className="w-1/2">
+                <div className="flex flex-row justify-between m-6">
+                    <span className="text-4xl font-bold">방 목록</span>
+                    <button className="border rounded-lg p-2"
+                        onClick={handleCreateRoom}>방 만들기</button>
+                </div>
+                <div id="room-list"
+                    className="h-3/5 overflow-auto">
+                    <ul className="grid grid-cols-2 gap-4">{renderRooms}</ul>
+                </div>
             </div>
         </div>
     );
