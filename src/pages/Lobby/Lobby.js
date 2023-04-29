@@ -57,7 +57,7 @@ const Lobby = () => {
                 onClick={() => handleJoinRoom(room.id)}
             >
                 <h2>{room.title}</h2>
-                <p>{room.owner}</p>
+                <p>{room.owner.nickname}</p>
             </li>
         ));
     }, [roomList]);
