@@ -11,7 +11,7 @@ const Home = () => {
     // 유저 생성 및 방 선택 화면으로 이동
     const handleSubmit = () => {
         const body = {
-            id: socket.id,
+            socketId: socket.id,
             nickname: nickname,
         };
         axios.post('/api/addUser', body)
