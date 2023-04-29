@@ -5,14 +5,14 @@ const roomSchema = new mongoose.Schema({
     id: {
         type: Number,
         required: true,
-        unique: true,
+        // unique: true,
     },
-    name: {
+    title: {
         type: String,
         required: true,
     },
     owner: {
-        type: ObjectId,
+        type: String,
         required: true,
         ref: 'User',
     },

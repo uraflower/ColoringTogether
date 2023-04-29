@@ -1,18 +1,24 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import io from "socket.io-client";
-const socket = io('http://localhost:5000');
+import socket from "../../utils/socket";
 
 const Home = () => {
     const navigate = useNavigate();
     const [nickname, setNickname] = useState("");
     const [isMulti, setIsMulti] = useState(true);
 
-    // 참여
+    // 유저 생성 및 방 선택 화면으로 이동
     const handleSubmit = () => {
-        console.log(nickname, isMulti);
-        socket.emit('createUser', nickname);
-        navigate('/lobby');
+        const body = {
+            id: socket.id,
+            nickname: nickname,
+        };
+        axios.post('/api/addUser', body)
+            .then((res) => console.log(res.data))
+            .catch((err) => console.error(err));
+
+        navigate('/Lobby');
     }
 
     return (
@@ -21,6 +27,7 @@ const Home = () => {
                 id="logo"
                 src={require("../../임시로고이미지.png")}
                 className="mb-10"
+                alt="logo"
             />
             <form method="get"
                 onSubmit={handleSubmit} className="grid gap-4">

@@ -4,8 +4,6 @@ const port = 5000;
 const server = require('http').createServer(app);
 const mongoose = require('mongoose');
 
-const socketio = require('./socket.js');
-socketio(server);
 
 // mongoDB와 Node 연결
 const MONGO_URI = require('./config/dev');
@@ -17,6 +15,10 @@ mongoose.connect(MONGO_URI)
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// socket.js 불러오기
+const socketio = require('./socket.js');
+socketio(server, app);
 
 // 서버 연결
 server.listen(port, () => {

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { io } from 'socket.io-client';
 import './chat.css';
-export const socket = io('localhost:5000');
-export const SocketContext = React.createContext();
+import socket from '../utils/socket';
 
 const Chat = (props) => {
     const [chat, setChat] = useState({ nickname: props.nickname, message: '' });
