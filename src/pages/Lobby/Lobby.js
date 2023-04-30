@@ -48,9 +48,9 @@ const Lobby = () => {
         // handleJoinRoom();
     };
 
-    const handleJoinRoom = (roomId) => {
+    const handleJoinRoom = (room) => {
         // 방 접속
-        socket.emit('joinRoom', 'title');
+        socket.emit('joinRoom', room);
     };
 
     // roomList 값이 변경될 때마다 renderRooms 함수 호출
@@ -58,10 +58,9 @@ const Lobby = () => {
     const renderRooms = useMemo(() => {
         return roomList.map((room) => (
             <li
-                key={room.id}
-                id="room-item"
+                key={room._id}
                 className="border rounded-xl border-gray-400 p-4 cursor-pointer w-full h-[120px]"
-                onClick={() => handleJoinRoom(room.id)}
+                onClick={(event) => handleJoinRoom(event.currentTarget.querySelector('h2').textContent)}
             >
                 <h2 className="text-lg font-semibold overflow-clip h-[60px] text-gray-800">
                     {room.title}

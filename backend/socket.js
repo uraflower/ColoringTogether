@@ -34,18 +34,6 @@ module.exports = (server, app) => {
                 .catch((err) => console.error(err));
         });
 
-        // disconnect : leave user from room & delete user info from DB
-        socket.on('disconnect', () => {
-            // socket.leave(roomName);
-            User.findOneAndDelete({ socketId: socket.id })
-                .exec()
-                .then(() => {
-                    console.log('User deleted:', socket.id);
-                    console.log('현재 연결된 소켓 수:', io.engine.clientsCount);
-                })
-                .catch((err) => console.error(err));
-        });
-
         // load all rooms from DB
         app.get('/api/getRoomList', (req, res) => {
             Room.find()
@@ -76,29 +64,29 @@ module.exports = (server, app) => {
                 title: req.body.title,
                 owner: _owner,
                 isMulti: req.body.isMulti,
-                createdAt: Date.now(),
             });
-
             newRoom.populate('owner')
                 .then(() => {
                     newRoom.save()
                         .then(() => {
-                            console.log('New Room created:', newRoom);
-                            res.send("save room");
                             roomList.push(newRoom);
+                            res.send("save room");
+                            console.log('New Room created:', newRoom);
                             console.log('[server]roomList:', roomList);
                             io.emit('roomCreated', roomList);
                         })
                         .catch((err) => console.error(err));
                 })
-                .catch((err) => console.log(newRoom.owner));
+                .catch((err) => console.error(err));
         });
 
         // join room
-        socket.on('joinRoom', () => {
-            // socket.join('roomName');
-            // roomList[roomId].users.push(socket.id);
-            // console.log(`${nickname} joined room ${roomId}`);
+        socket.on('joinRoom', (roomName) => {
+            socket.join(roomName);
+            const index = roomList.findIndex((room) => room.title === roomName);
+            roomList[index].users.push(socket.id);
+            console.log(`${socket.id} joined room "${roomName}"`);
+            console.log('room info:', roomList[index]);
         });
 
         // send message
@@ -106,5 +94,38 @@ module.exports = (server, app) => {
             io.emit('chat message', ({ nickname, message }));
             console.log(`[CHAT]${nickname}: ${message}`);
         });
+
+        // disconnect : leave user from room & delete user info from DB
+        socket.on('disconnect', () => {
+            handleUserLeave();
+            deleteUser();
+        });
+
+        const handleUserLeave = () => {
+            const index = roomList.findIndex((room) => room.users.includes(socket.id));
+            if (index < 0) return;  // user가 아무 room에도 join하지 않은 경우
+
+            socket.leave(roomList[index].title);
+            roomList[index].users = roomList[index].users.filter(userId => userId !== socket.id);   // userId가 socket.id인 원소를 삭제
+            if (roomList[index].users.length === 0) deleteRoom(index);
+        }
+
+        const deleteRoom = (index) => {
+            Room.findOneAndDelete({ _id: roomList[index]._id }).exec();
+            roomList.splice(index, 1);
+            console.log(`room ${index} is removed.`);
+            console.log('Current RoomList:', roomList);
+        }
+
+        const deleteUser = () => {
+            User.findOneAndDelete({ socketId: socket.id })
+                .exec()
+                .then(() => {
+                    console.log('User deleted:', socket.id);
+                    console.log('현재 연결된 소켓 수:', io.engine.clientsCount);
+                })
+                .catch((err) => console.error(err));
+        };
     });
 };
+
