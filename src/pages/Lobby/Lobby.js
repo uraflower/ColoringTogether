@@ -60,11 +60,15 @@ const Lobby = () => {
             <li
                 key={room.id}
                 id="room-item"
-                className="border rounded-xl border-gray-900 p-4 cursor-pointer"
+                className="border rounded-xl border-gray-400 p-4 cursor-pointer w-full h-[120px]"
                 onClick={() => handleJoinRoom(room.id)}
             >
-                <h2 className="text-lg font-semibold">{room.title}</h2>
-                <p>{room.owner.nickname}</p>
+                <h2 className="text-lg font-semibold overflow-clip h-[60px] text-gray-800">
+                    {room.title}
+                </h2>
+                <p className="text-right overflow-clip">
+                    {room.owner.nickname}
+                </p>
             </li>
         ));
     }, [roomList]);
@@ -72,7 +76,7 @@ const Lobby = () => {
     return (
         <div className="h-screen flex justify-center items-center">
             <div id="room-list-container"
-                className="w-1/2">
+                className="w-3/5">
                 <div className="flex flex-row justify-between m-6">
                     <span className="text-4xl font-bold">방 목록</span>
                     <button className="border rounded-lg p-2"
@@ -89,13 +93,13 @@ const Lobby = () => {
                             onChange={(event) => setRoomTitle(event.target.value)}
                             autoFocus={true}
                             maxLength={20}
-                            className="w-full p-2 outline-none rounded border-2 border-black"
+                            className="w-full p-2 outline-none rounded border-2 border-gray-400"
                         />
                     </Modal>
                 </div>
                 <div id="room-list"
-                    className="h-3/5 overflow-auto">
-                    <ul className="grid grid-cols-2 gap-4">{renderRooms}</ul>
+                    className="min-w-[450px] w-full h-[680px] overflow-y-auto">
+                    <ul className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] auto-rows-auto gap-4">{renderRooms}</ul>
                 </div>
             </div>
         </div>
