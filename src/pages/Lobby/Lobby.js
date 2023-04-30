@@ -38,7 +38,6 @@ const Lobby = () => {
         const body = {
             title: roomTitle,
             owner: socket.id,
-            isMulti: true,
         }
         axios.post('/api/createRoom', body)
             .then((res) => console.log(res.data))

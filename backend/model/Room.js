@@ -10,10 +10,6 @@ const roomSchema = new mongoose.Schema({
         required: true,
         ref: 'User',
     },
-    isMulti: {
-        type: Boolean,
-        required: true,
-    },
     createdAt: {
         type: Date,
         reqruied: true,

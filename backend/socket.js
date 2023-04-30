@@ -63,7 +63,6 @@ module.exports = (server, app) => {
             const newRoom = await Room.create({
                 title: req.body.title,
                 owner: _owner,
-                isMulti: req.body.isMulti,
             });
             newRoom.populate('owner')
                 .then(() => {
