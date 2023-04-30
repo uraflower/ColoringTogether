@@ -1,12 +1,15 @@
 import axios from "axios";
 import React, { useState, useEffect, useMemo } from "react";
 import socket from "../../utils/socket";
+import Modal from "../../components/modal";
 
 const Lobby = () => {
     const [roomList, setRoomList] = useState([]);
+    const [isModalOpened, setModalOpen] = useState(false);
+    const [roomTitle, setRoomTitle] = useState('');
 
+    // DB에서 RoomList를 가져오기
     useEffect(() => {
-        // DB에서 RoomList를 가져오기
         axios.get('/api/getRoomList')
             .then((res) => {
                 console.log('res.data:', res.data);
@@ -15,22 +18,25 @@ const Lobby = () => {
             .catch((err) => console.error(err));
     }, []);
 
-
+    // 방이 생성되면 방 목록 업데이트
     useEffect(() => {
         socket.on('roomCreated', (rooms) => {
             setRoomList(rooms);
         });
     }, []);
 
-    useEffect(() => {
-        console.log('[client]RoomList:', roomList);
-    }, [roomList]);
+    const openModal = () => {
+        setModalOpen(true);
+    }
 
+    const closeModal = () => {
+        setModalOpen(false);
+    }
 
     const handleCreateRoom = () => {
         // 방 생성
         const body = {
-            title: 'title',
+            title: roomTitle,
             owner: socket.id,
             isMulti: true,
         }
@@ -70,7 +76,22 @@ const Lobby = () => {
                 <div className="flex flex-row justify-between m-6">
                     <span className="text-4xl font-bold">방 목록</span>
                     <button className="border rounded-lg p-2"
-                        onClick={handleCreateRoom}>방 만들기</button>
+                        onClick={openModal}>방 만들기</button>
+                    <Modal
+                        isOpened={isModalOpened}
+                        close={closeModal}
+                        header="방 만들기"
+                        onSubmit={handleCreateRoom}
+                    >
+                        <input
+                            type="text"
+                            placeholder="방 제목을 입력하세요"
+                            onChange={(event) => setRoomTitle(event.target.value)}
+                            autoFocus={true}
+                            maxLength={20}
+                            className="w-full p-2 outline-none rounded border-2 border-black"
+                        />
+                    </Modal>
                 </div>
                 <div id="room-list"
                     className="h-3/5 overflow-auto">
