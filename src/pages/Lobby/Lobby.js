@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import socket from "../../utils/socket";
 import Modal from "../../components/modal";
 
 const Lobby = () => {
+    const navigate = useNavigate();
     const [roomList, setRoomList] = useState([]);
     const [isModalOpened, setModalOpen] = useState(false);
     const [roomTitle, setRoomTitle] = useState('');
@@ -20,7 +22,7 @@ const Lobby = () => {
 
     // 방이 생성되면 방 목록 업데이트
     useEffect(() => {
-        socket.on('roomCreated', (rooms) => {
+        socket.on('updateRoomList', (rooms) => {
             setRoomList(rooms);
         });
     }, []);
@@ -37,19 +39,19 @@ const Lobby = () => {
         // 방 생성
         const body = {
             title: roomTitle,
-            owner: socket.id,
+            id: socket.id,
         }
         axios.post('/api/createRoom', body)
-            .then((res) => console.log(res.data))
+            .then((res) => {
+                console.log(res.data);
+                handleJoinRoom(roomTitle);
+            })
             .catch((err) => console.error(err));
-
-        // 방 생성 시 바로 참여
-        // handleJoinRoom();
     };
 
     const handleJoinRoom = (room) => {
-        // 방 접속
         socket.emit('joinRoom', room);
+        // navigate('/SelectBg');
     };
 
     // roomList 값이 변경될 때마다 renderRooms 함수 호출

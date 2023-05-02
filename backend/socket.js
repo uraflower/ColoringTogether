@@ -47,22 +47,27 @@ module.exports = (server, app) => {
                 .catch((err) => console.error(err));
         });
 
+        // send roomlist data
+        const sendRoomList = () => {
+            socket.emit('updateRoomList', (roomList));
+        }
+
         // get user's '_id' in DB
         const getUserObjectId = async (id) => {
             const user = await User.findOne({ socketId: id })
                 .lean()
                 .populate()
                 .exec();
-            console.log('user:', user);
             return user._id;
         };
 
         // create room
         app.post('/api/createRoom', async (req, res) => {
-            const _owner = await getUserObjectId(req.body.owner);
+            const _owner = await getUserObjectId(req.body.id);
             const newRoom = await Room.create({
                 title: req.body.title,
                 owner: _owner,
+                // users: req.body.id,
             });
             newRoom.populate('owner')
                 .then(() => {
@@ -72,7 +77,7 @@ module.exports = (server, app) => {
                             res.send("save room");
                             console.log('New Room created:', newRoom);
                             console.log('[server]roomList:', roomList);
-                            io.emit('roomCreated', roomList);
+                            sendRoomList();
                         })
                         .catch((err) => console.error(err));
                 })
@@ -83,9 +88,14 @@ module.exports = (server, app) => {
         socket.on('joinRoom', (roomName) => {
             socket.join(roomName);
             const index = roomList.findIndex((room) => room.title === roomName);
-            roomList[index].users.push(socket.id);
+
+            // 이 방에 join한 sockets를 roomList users에 할당
+            const users = [...io.sockets.adapter.rooms.get(roomName)];
+            roomList[index].users = users;
+
             console.log(`${socket.id} joined room "${roomName}"`);
             console.log('room info:', roomList[index]);
+            sendRoomList();
         });
 
         // send message
@@ -96,24 +106,36 @@ module.exports = (server, app) => {
 
         // disconnect : leave user from room & delete user info from DB
         socket.on('disconnect', () => {
-            handleUserLeave();
+            const index = roomList.findIndex(
+                (room) => room.users.includes(socket.id));
+
+            // user가 어떤 room이든 join한 경우
+            if (index !== -1) {
+                socket.leaveAll(socket.id);
+                roomList[index].users = roomList[index].users.filter(userId => userId !== socket.id);
+
+                if (roomList[index].users.length && roomList[index].owner.socketId == socket.id) {
+                    updateOwner(roomList[index]);
+                }
+                else {
+                    removeRoom(index);
+                }
+                sendRoomList();
+            }
             deleteUser();
         });
 
-        const handleUserLeave = () => {
-            const index = roomList.findIndex((room) => room.users.includes(socket.id));
-            if (index < 0) return;  // user가 아무 room에도 join하지 않은 경우
-
-            socket.leave(roomList[index].title);
-            roomList[index].users = roomList[index].users.filter(userId => userId !== socket.id);   // userId가 socket.id인 원소를 삭제
-            if (roomList[index].users.length === 0) deleteRoom(index);
-        }
-
-        const deleteRoom = (index) => {
+        const removeRoom = (index) => {
             Room.findOneAndDelete({ _id: roomList[index]._id }).exec();
             roomList.splice(index, 1);
             console.log(`room ${index} is removed.`);
-            console.log('Current RoomList:', roomList);
+        }
+
+        const updateOwner = async (room) => {
+            const newOwner = await getUserObjectId(room.users[0]);
+            await Room.findByIdAndUpdate(room._id, { owner: newOwner })
+                .populate('owner').exec();
+            room.owner = await User.findById(newOwner).exec();
         }
 
         const deleteUser = () => {
