@@ -6,24 +6,24 @@ import Modal from "../../components/modal";
 
 const Lobby = () => {
     const navigate = useNavigate();
-    const [roomList, setRoomList] = useState([]);
+    const [rooms, setRooms] = useState([]);
     const [isModalOpened, setModalOpen] = useState(false);
     const [roomTitle, setRoomTitle] = useState('');
 
-    // DB에서 RoomList를 가져오기
+    // DB에서 Rooms를 가져오기
     useEffect(() => {
-        axios.get('/api/getRoomList')
+        axios.get('/api/getRooms')
             .then((res) => {
                 console.log('res.data:', res.data);
-                setRoomList(res.data);
+                setRooms(res.data);
             })
             .catch((err) => console.error(err));
     }, []);
 
     // 방이 생성되면 방 목록 업데이트
     useEffect(() => {
-        socket.on('updateRoomList', (rooms) => {
-            setRoomList(rooms);
+        socket.on('updateRooms', (rooms) => {
+            setRooms(rooms);
         });
     }, []);
 
@@ -54,10 +54,10 @@ const Lobby = () => {
         // navigate('/SelectBg');
     };
 
-    // roomList 값이 변경될 때마다 renderRooms 함수 호출
+    // rooms 값이 변경될 때마다 renderRooms 함수 호출
     // useMemo()로 계산한 값을 저장했다가 재사용함
     const renderRooms = useMemo(() => {
-        return roomList.map((room) => (
+        return rooms.map((room) => (
             <li
                 key={room._id}
                 className="border rounded-xl border-gray-400 p-4 cursor-pointer w-full h-[120px]"
@@ -71,7 +71,7 @@ const Lobby = () => {
                 </p>
             </li>
         ));
-    }, [roomList]);
+    }, [rooms]);
 
     return (
         <div className="h-screen flex justify-center items-center">

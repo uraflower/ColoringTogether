@@ -11,7 +11,7 @@ module.exports = (server, app) => {
         }
     });
 
-    let roomList = [];
+    let rooms = [];
 
     // handle events
     io.on('connection', (socket) => {
@@ -35,21 +35,21 @@ module.exports = (server, app) => {
         });
 
         // load all rooms from DB
-        app.get('/api/getRoomList', (req, res) => {
+        app.get('/api/getRooms', (req, res) => {
             Room.find()
                 .populate('owner')
                 .exec()
                 .then((data) => {
                     res.send(data)
-                    roomList = data;
-                    console.log('roomList:', roomList);
+                    rooms = data;
+                    console.log('rooms:', rooms);
                 })
                 .catch((err) => console.error(err));
         });
 
-        // send roomlist data
-        const sendRoomList = () => {
-            socket.emit('updateRoomList', (roomList));
+        // send rooms data
+        const sendRooms = () => {
+            socket.emit('updateRooms', (rooms));
         }
 
         // get user's '_id' in DB
@@ -73,11 +73,11 @@ module.exports = (server, app) => {
                 .then(() => {
                     newRoom.save()
                         .then(() => {
-                            roomList.push(newRoom);
+                            rooms.push(newRoom);
                             res.send("save room");
                             console.log('New Room created:', newRoom);
-                            console.log('[server]roomList:', roomList);
-                            sendRoomList();
+                            console.log('[server]rooms:', rooms);
+                            sendRooms();
                         })
                         .catch((err) => console.error(err));
                 })
@@ -87,15 +87,15 @@ module.exports = (server, app) => {
         // join room
         socket.on('joinRoom', (roomName) => {
             socket.join(roomName);
-            const index = roomList.findIndex((room) => room.title === roomName);
+            const index = rooms.findIndex((room) => room.title === roomName);
 
-            // 이 방에 join한 sockets를 roomList users에 할당
+            // 이 방에 join한 sockets를 rooms users에 할당
             const users = [...io.sockets.adapter.rooms.get(roomName)];
-            roomList[index].users = users;
+            rooms[index].users = users;
 
             console.log(`${socket.id} joined room "${roomName}"`);
-            console.log('room info:', roomList[index]);
-            sendRoomList();
+            console.log('room info:', rooms[index]);
+            sendRooms();
         });
 
         // send message
@@ -106,28 +106,28 @@ module.exports = (server, app) => {
 
         // disconnect : leave user from room & delete user info from DB
         socket.on('disconnect', () => {
-            const index = roomList.findIndex(
+            const index = rooms.findIndex(
                 (room) => room.users.includes(socket.id));
 
             // user가 어떤 room이든 join한 경우
             if (index !== -1) {
                 socket.leaveAll(socket.id);
-                roomList[index].users = roomList[index].users.filter(userId => userId !== socket.id);
+                rooms[index].users = rooms[index].users.filter(userId => userId !== socket.id);
 
-                if (roomList[index].users.length && roomList[index].owner.socketId == socket.id) {
-                    updateOwner(roomList[index]);
+                if (rooms[index].users.length && rooms[index].owner.socketId == socket.id) {
+                    updateOwner(rooms[index]);
                 }
                 else {
                     removeRoom(index);
                 }
-                sendRoomList();
+                sendRooms();
             }
             deleteUser();
         });
 
         const removeRoom = (index) => {
-            Room.findOneAndDelete({ _id: roomList[index]._id }).exec();
-            roomList.splice(index, 1);
+            Room.findOneAndDelete({ _id: rooms[index]._id }).exec();
+            rooms.splice(index, 1);
             console.log(`room ${index} is removed.`);
         }
 
