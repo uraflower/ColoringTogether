@@ -2,9 +2,11 @@ import React from 'react';
 import { useState } from 'react';
 import { getImageSlots } from '../utils/getImageSlots';
 
+// 그림 도안 선택 탭
 const SelectColoring = () => {
     const filterList = ['전체', '동물', '식물', '꽃', '풍경', '캐릭터', '두들링'];
     const [currentFilter, setCurrentFilter] = useState(0);
+
     const images = [
         { index: 0, path: '/assets/coloring01.jpg' },
         { index: 1, path: '/assets/coloring02.jpg' },
@@ -39,28 +41,20 @@ const SelectColoring = () => {
         <>
             <div
                 id="filter"
-                className="w-full overflow-auto">
+                className="w-full overflow-auto bg-white">
                 {createFilterButton()}
             </div>
             <div
                 id="gallery"
-                className="relative h-[calc(100%-6.25rem)] overflow-auto">
+                className="relative h-[calc(100%-3.5rem)] overflow-auto">
                 <div
                     id="images"
-                    className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] auto-rows-auto gap-5">
+                    className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] auto-rows-auto gap-5">
                     {getImageSlots(images)}
                 </div>
-            </div>
-            <div
-                id="choose-image-btn"
-                className="absolute bottom-0 right-0">
-                <button
-                    className="px-6 py-2 mx-3 my-2 text-white transition-colors duration-200 bg-indigo-400 rounded-full hover:bg-indigo-600">
-                    선택 버튼
-                </button>
             </div>
         </>
     )
 }
 
-export default SelectColoring
+export default SelectColoring;

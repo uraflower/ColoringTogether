@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import socket from "../../utils/socket";
 import Modal from "../../components/modal";
+import SelectBox from '../SelectBg/SelectBox';
 
 const Lobby = () => {
     const navigate = useNavigate();
@@ -51,7 +52,7 @@ const Lobby = () => {
 
     const handleJoinRoom = (room) => {
         socket.emit('joinRoom', room);
-        // navigate('/SelectBg');
+        navigate('/SelectBg');
     };
 
     // rooms 값이 변경될 때마다 renderRooms 함수 호출
@@ -87,14 +88,16 @@ const Lobby = () => {
                         header="방 만들기"
                         onSubmit={handleCreateRoom}
                     >
+                        <label className="text-lg font-bold px-1">방 제목</label>
                         <input
                             type="text"
                             placeholder="방 제목을 입력하세요"
                             onChange={(event) => setRoomTitle(event.target.value)}
                             autoFocus={true}
                             maxLength={20}
-                            className="w-full p-2 outline-none rounded border-2 border-gray-400"
+                            className="w-full my-2 p-2 outline-none rounded border-2 border-gray-400"
                         />
+                        <SelectBox />
                     </Modal>
                 </div>
                 <div id="room-list"

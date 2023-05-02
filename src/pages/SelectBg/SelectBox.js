@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import SelectColoring from '../../components/selectColoring';
 
+// 배경 이미지 선택 박스
 const SelectBg = () => {
     const tabList = [
         {
@@ -26,8 +27,7 @@ const SelectBg = () => {
                 role="tab"
                 aria-selected={currentTab === index}
                 onClick={() => setCurrentTab(index)}
-                className="px-4 py-2 bg-indigo-400 text-white hover:bg-indigo-600 transition-colors duration-100 shadow-[0px_0px_20px_0px_#00000014] rounded-[1rem_1rem_0_0] aria-selected:bg-white aria-selected:text-black"
-
+                className="px-4 py-2 bg-indigo-400 text-white hover:bg-indigo-600 transition-colors duration-100 shadow-[0px_0px_5px_0px_#00000014] rounded-[1rem_1rem_0_0] aria-selected:bg-white aria-selected:text-black"
             >
                 {tab.tabName}
             </button>
@@ -38,7 +38,7 @@ const SelectBg = () => {
         <div
             className="h-full">
             <div
-                className="text-3xl my-2">
+                className="text-lg font-bold my-2 p-1">
                 배경 선택
             </div>
 
@@ -49,7 +49,7 @@ const SelectBg = () => {
 
             <div
                 id="content-box"
-                className="relative h-[calc(100%-6rem)] shadow-[0px_0px_20px_0px_#00000014] rounded-[0_0_1rem_1rem] overflow-hidden">
+                className="relative h-[512px] shadow-[0px_0px_5px_0px_#00000014] rounded-[0_0_1rem_1rem] overflow-hidden px-1">
                 {tabList[currentTab].content}
             </div>
         </div>
