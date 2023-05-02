@@ -13,7 +13,7 @@ const Modal = (props) => {
             {isOpened ? (
                 <section className="mx-0 my-auto px-4 bg-white w-4/5 max-w-md rounded-md">
                     <header className="py-3 flex flex-row justify-between">
-                        <span className="text-xl font-bold">{header}</span>
+                        <span className="text-2xl font-bold">{header}</span>
                         <button
                             className=""
                             onClick={close}>X</button>
