@@ -59,7 +59,7 @@ const Chat = (props) => {
                     value={chat.message}
                     onChange={onTypeMessage}
                     maxLength="150"
-                    className="focus:outline-none flex-grow break-words resize-none m-3 text-sm" />
+                    className="focus:outline-none flex-grow break-words resize-none p-3 text-sm" />
                 <input
                     type="submit"
                     value="💌"
