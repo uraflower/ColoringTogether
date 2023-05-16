@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import Chat from "../../components/chat";
 
 const Coloring = () => {
     const canvasRef = useRef(null); // canvas는 자체적으로 상태 관리를 함 따로 관리 필요 X
@@ -26,11 +26,20 @@ const Coloring = () => {
 
     return (
         <>
-            <h2>Coloring</h2>
-            <Link to="/">초기 화면으로</Link>
-            <canvas ref={canvasRef} />
-            <img ref={imageRef} alt="coloring background" className="hidden" />
+            <header className="bg-amber-400 p-2 space-x-1">
+            </header>
+            <div className="bg-gray-200 w-full flex">
+                <main className="bg-red-200"
+                >
+                    <img ref={imageRef} alt="coloring background" className="hidden" />
+                    <canvas ref={canvasRef} />
+                </main>
+                <div className="bg-green-400 absolute right-0">
+                    <Chat />
+                </div>
+            </div>
         </>
     );
 }
+
 export default Coloring;
