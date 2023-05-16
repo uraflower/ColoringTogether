@@ -1,12 +1,16 @@
 import React, { useRef, useState, useEffect } from "react";
 import Chat from "../../components/chat";
+import { MdOutlineBrush, MdColorLens } from "react-icons/md";
 import { TbArrowsMove, TbZoomIn, TbZoomOut, TbMinus, TbPlus } from "react-icons/tb";
+import { SketchPicker } from 'react-color';
 
 const Coloring = () => {
     const canvasRef = useRef(null); // canvas는 자체적으로 상태 관리를 함 따로 관리 필요 X
     const [context, setContext] = useState(); // context는 그래픽 드로잉 api를 정의한 인터페이스임
     const imageRef = useRef(null);
     const [isDragging, setIsDragging] = useState(false);
+    const [isHidden, setIsHidden] = useState(true);
+    const [color, setColor] = useState("#000000");
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -14,6 +18,7 @@ const Coloring = () => {
         // canvas.height = window.innerHeight;
         const context = canvas?.getContext('2d');
         setContext(context);
+        context.strokeStyle = color;
         context.lineWidth = 100;
 
         const image = imageRef.current;
@@ -34,6 +39,11 @@ const Coloring = () => {
 
     const increaseBrushSize = () => {
         context.lineWidth += 1;
+    };
+
+    const setStrokeColor = (pickedColor) => {
+        setColor(pickedColor);
+        context.strokeStyle = pickedColor;
     };
 
     const startDragging = () => {
@@ -65,6 +75,14 @@ const Coloring = () => {
                 </button>
                 <button onClick={increaseBrushSize}>
                     <TbPlus />
+                </button>
+                <SketchPicker
+                    className={isHidden ? "hidden" : "absolute"}
+                    color={color}
+                    onChange={(color) => setStrokeColor(color.hex)}
+                />
+                <button onClick={hide}>
+                    <MdColorLens />
                 </button>
             </header>
             <div className="bg-gray-200 w-full flex">
