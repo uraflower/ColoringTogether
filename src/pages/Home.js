@@ -30,7 +30,9 @@ const Home = () => {
                 width="50%"
                 height="50%"
             />
-            <div className="grid gap-4">
+            <form
+                className="grid gap-4"
+                onSubmit={handleSubmit}>
                 <div className="grid grid-cols-3 items-center justify-items-center">
                     <label>닉네임</label>
                     <input
@@ -44,14 +46,14 @@ const Home = () => {
                         onChange={({ target: { value } }) => setNickname(value)}
                     />
                 </div>
+
                 <input
-                    type="button"
+                    type="submit"
                     id="create-room"
                     value="참가하기"
                     className="cursor-pointer rounded-xl py-3 px-5 text-xl bg-amber-400 text-white"
-                    onClick={handleSubmit}
                 />
-            </div>
+            </form>
         </div>
     );
 }
