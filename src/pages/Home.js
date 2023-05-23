@@ -6,7 +6,6 @@ import socket from "../utils/socket";
 const Home = () => {
     const navigate = useNavigate();
     const [nickname, setNickname] = useState("");
-    const [isMulti, setIsMulti] = useState(true);
 
     // 유저 생성 및 방 선택 화면으로 이동
     const handleSubmit = () => {
@@ -44,43 +43,7 @@ const Home = () => {
                         onChange={({ target: { value } }) => setNickname(value)}
                     />
                 </div>
-                <div className="grid grid-cols-3  items-center justify-items-center">
-                    <span>유형</span>
-                    <div>
-                        <input
-                            type="radio"
-                            id="multi"
-                            value="multi"
-                            name="roomtype"
-                            className="peer hidden"
-                            checked={isMulti === true}
-                            onChange={() => setIsMulti(true)}
-                        />
-                        <label
-                            htmlFor="multi"
-                            className="inline-block cursor-pointer rounded-xl py-2 px-4 border border-gray-200
-                            peer-checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:text-white peer-checked:font-bold">
-                            함께하기
-                        </label>
-                    </div>
-                    <div>
-                        <input
-                            type="radio"
-                            id="solo"
-                            value="solo"
-                            name="roomtype"
-                            className="peer hidden"
-                            checked={isMulti === false}
-                            onChange={() => setIsMulti(false)}
-                        />
-                        <label
-                            htmlFor="solo"
-                            className="inline-block cursor-pointer rounded-xl py-2 px-4 border border-gray-200
-                            peer-checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:text-white peer-checked:font-bold">
-                            혼자하기
-                        </label>
-                    </div>
-                </div>
+
                 <input
                     type="submit"
                     id="create-room"
