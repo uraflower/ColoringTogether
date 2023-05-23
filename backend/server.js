@@ -8,8 +8,8 @@ const mongoose = require('mongoose');
 // mongoDB와 Node 연결
 const MONGO_URI = require('./config/dev');
 mongoose.connect(MONGO_URI)
-    .then(() => console.log('MongoDB Connected...'))
-    .catch((err) => console.log(err))
+  .then(() => console.log('MongoDB Connected...'))
+  .catch((err) => console.log(err))
 
 // body parser 설정
 const bodyParser = require('body-parser');
@@ -22,5 +22,5 @@ socketio(server, app);
 
 // 서버 연결
 server.listen(port, () => {
-    console.log(`Listening on port ${port}`);
+  console.log(`Listening on port ${port}`);
 });
