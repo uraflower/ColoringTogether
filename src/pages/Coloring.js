@@ -193,7 +193,7 @@ const Coloring = () => {
           <TbPlus />
         </button>
         <SketchPicker
-          className={isHidden ? "hidden" : "absolute"}
+          className={isHidden ? "hidden" : "absolute z-30"}
           color={color}
           onChange={(color) => setStrokeColor(color.hex)}
         />
