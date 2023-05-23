@@ -1,11 +1,17 @@
 import React from 'react';
 
 const Modal = (props) => {
-    const { isOpened, close, header, onSubmit } = props;
+    const { isOpened, close, header, onSubmit, isValid } = props;
 
     const handleClick = () => {
-        close();
-        onSubmit();
+
+        if (isValid) {
+            close();
+            onSubmit();
+        }
+        else {
+            alert("내용을 입력해주세요");
+        }
     }
 
     return (

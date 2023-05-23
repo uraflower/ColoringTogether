@@ -11,6 +11,7 @@ const Lobby = () => {
     const [isModalOpened, setModalOpen] = useState(false);
     const [roomTitle, setRoomTitle] = useState('');
     const [selectedImage, setSelectedImage] = useState('');
+    const [isValid, setIsValid] = useState(false);
 
     // DB에서 Rooms를 가져오기
     useEffect(() => {
@@ -93,12 +94,16 @@ const Lobby = () => {
                         close={closeModal}
                         header="방 만들기"
                         onSubmit={handleCreateRoom}
+                        isValid={isValid}
                     >
                         <label className="text-lg font-bold px-1">방 제목</label>
                         <input
                             type="text"
                             placeholder="방 제목을 입력하세요"
-                            onChange={(event) => setRoomTitle(event.target.value)}
+                            onChange={(event) => {
+                                setRoomTitle(event.target.value);
+                                roomTitle.length != 0 ? setIsValid(true) : setIsValid(false);
+                            }}
                             autoFocus={true}
                             maxLength={20}
                             className="w-full my-2 p-2 outline-none rounded border-2 border-gray-400"
