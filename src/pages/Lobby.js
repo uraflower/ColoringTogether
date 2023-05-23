@@ -1,9 +1,9 @@
 import axios from "axios";
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import socket from "../../utils/socket";
-import Modal from "../../components/modal";
-import SelectBox from '../SelectBg/SelectBox';
+import socket from "../utils/socket";
+import Modal from "../components/modal";
+import SelectBg from './SelectBg';
 
 const Lobby = () => {
     const navigate = useNavigate();
@@ -103,7 +103,7 @@ const Lobby = () => {
                             maxLength={20}
                             className="w-full my-2 p-2 outline-none rounded border-2 border-gray-400"
                         />
-                        <SelectBox
+                        <SelectBg
                             changeSelectedImage={changeSelectedImage} />
                     </Modal>
                 </div>

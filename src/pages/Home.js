@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import socket from "../../utils/socket";
+import socket from "../utils/socket";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ const Home = () => {
         <div className="flex justify-center items-center flex-col">
             <img
                 id="logo"
-                src={require("../../임시로고이미지.png")}
+                src={require("../logo.png")}
                 className="mb-10"
                 alt="logo"
             />

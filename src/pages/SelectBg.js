@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { getImageSlots } from '../../utils/getImageSlots';
+import { getImageSlots } from '../utils/getImageSlots';
 
 // 배경 이미지 선택 박스
-const SelectBox = ({ changeSelectedImage }) => {
+const SelectBg = ({ changeSelectedImage }) => {
     const tabList = [
         {
             tabName: "그림 도안",
@@ -91,4 +91,4 @@ const ColoringContent = ({ changeSelectedImage }) => {
     )
 }
 
-export default SelectBox;
+export default SelectBg;
