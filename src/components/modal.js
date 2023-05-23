@@ -32,7 +32,7 @@ const Modal = (props) => {
                                 onClick={close}>닫기</button>
                         </div>
                         <div
-                            className="bg-indigo-500 rounded text-white px-3 py-2">
+                            className="bg-amber-400 rounded text-white px-3 py-2">
                             <button
                                 onClick={handleClick}>확인</button>
                         </div>

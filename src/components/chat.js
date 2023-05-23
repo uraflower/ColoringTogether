@@ -63,7 +63,7 @@ const Chat = (props) => {
                 <input
                     type="submit"
                     value="💌"
-                    className="focus:outline-none p-2 bg-indigo-400 cursor-pointer"
+                    className="focus:outline-none p-2 bg-amber-400 cursor-pointer"
                 />
             </form>
         </div>

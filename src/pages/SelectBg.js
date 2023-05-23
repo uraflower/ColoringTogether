@@ -29,7 +29,7 @@ const SelectBg = ({ changeSelectedImage }) => {
                 role="tab"
                 aria-selected={currentTab === index}
                 onClick={() => setCurrentTab(index)}
-                className="px-4 py-2 bg-indigo-400 text-white hover:bg-indigo-600 transition-colors duration-100 shadow-[0px_0px_5px_0px_#00000014] rounded-[1rem_1rem_0_0] aria-selected:bg-white aria-selected:text-black"
+                className="px-4 py-2 bg-amber-400 text-white hover:bg-amber-500 transition-colors duration-100 shadow-[0px_0px_5px_0px_#00000014] rounded-[1rem_1rem_0_0] aria-selected:bg-white aria-selected:text-black"
             >
                 {tab.tabName}
             </button>

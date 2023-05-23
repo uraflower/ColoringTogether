@@ -106,7 +106,8 @@ const Lobby = () => {
                             }}
                             autoFocus={true}
                             maxLength={20}
-                            className="w-full my-2 p-2 outline-none rounded border-2 border-gray-400"
+                            className="w-full my-2 p-2 outline-none rounded border-2 border-gray-400 focus:border-amber-500"
+                            required
                         />
                         <SelectBg
                             changeSelectedImage={changeSelectedImage} />
