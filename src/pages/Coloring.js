@@ -11,8 +11,10 @@ const SCROLL_SENSITIVITY = 0.0005;
 
 const Coloring = () => {
   const { state } = useLocation();
-  const canvasRef = useRef(null); // canvas는 자체적으로 상태 관리를 함 따로 관리 필요 X
-  const [context, setContext] = useState(); // context는 그래픽 드로잉 api를 정의한 인터페이스임
+  const canvasDrawingRef = useRef(null); // canvas는 자체적으로 상태 관리를 함 따로 관리 필요 X
+  const canvasBgRef = useRef(null);
+  const [contextDrawing, setContextDrawing] = useState(); // context는 그래픽 드로잉 api를 정의한 인터페이스임
+  const [contextBg, setContextBg] = useState();
   const imageRef = useRef(null);
   const [mode, setMode] = useState(PAN);   // pan / draw
   const [isDragging, setIsDragging] = useState(false);
@@ -23,24 +25,29 @@ const Coloring = () => {
   const [dragStartPoint, setDragStartPoint] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    // canvas.width = window.innerWidth;
-    // canvas.height = window.innerHeight;
-    const context = canvas?.getContext('2d');
-    setContext(context);
-    context.strokeStyle = color;
-    context.lineWidth = 100;
+    const canvasDrawing = canvasDrawingRef.current;
+    const canvasBg = canvasBgRef.current;
+    const _contextDrawing = canvasDrawing?.getContext('2d');
+    const _contextBg = canvasBg?.getContext('2d');
+    setContextDrawing(_contextDrawing);
+    setContextBg(_contextBg);
+    _contextDrawing.strokeStyle = color;
+    _contextDrawing.lineWidth = 100;
 
-    initImage(canvas);
-
-    // context.translate(canvas.width / 3, canvas.height / 3);
-    context.scale(1, 1);
-    setCameraOffset({ x: canvas.width / 2, y: canvas.height / 2, });
+    initImage(contextBg, canvasBg);
+    canvasDrawing.width = canvasBg.width;
+    canvasDrawing.height = canvasBg.height;
+    // context.translate(canvasDrawing.width / 3, canvasDrawing.height / 3);
+    // contextDrawing.scale(1, 1);
+    // contextBg.scale(1, 1);
+    setCameraOffset({ x: canvasDrawing.width / 2, y: canvasDrawing.height / 2, });
   }, []);
 
-  const initImage = async (canvas) => {
+  const initImage = async (context, canvas) => {
     console.log(state);
-    const image = imageRef.current;
+    // const image = imageRef.current;
+    const image = new Image();
+    console.log(image);
     image.src = await state;
 
     // 여기는 그냥 캔버스 크기!
@@ -62,16 +69,16 @@ const Coloring = () => {
   };
 
   const decreaseBrushSize = () => {
-    context.lineWidth -= 1;
+    contextDrawing.lineWidth -= 1;
   };
 
   const increaseBrushSize = () => {
-    context.lineWidth += 1;
+    contextDrawing.lineWidth += 1;
   };
 
   const setStrokeColor = (pickedColor) => {
     setColor(pickedColor);
-    context.strokeStyle = pickedColor;
+    contextDrawing.strokeStyle = pickedColor;
   };
 
   const hide = () => {
@@ -132,19 +139,19 @@ const Coloring = () => {
     console.log(nativeEvent);
 
     const { offsetX, offsetY } = nativeEvent;
-    if (context) {
+    if (contextDrawing) {
       if (!isDragging) {
-        context.beginPath();
-        context.moveTo(offsetX, offsetY);
+        contextDrawing.beginPath();
+        contextDrawing.moveTo(offsetX, offsetY);
       } else {
-        context.lineTo(offsetX, offsetY);
-        context.stroke();
+        contextDrawing.lineTo(offsetX, offsetY);
+        contextDrawing.stroke();
       }
     }
   };
 
   const panning = (e) => {
-    if (context) {
+    if (contextDrawing) {
       if (isDragging) {
         const current = {
           x: e.clientX,
@@ -195,9 +202,12 @@ const Coloring = () => {
         </button>
       </header>
       <div className="bg-gray-200 w-full flex">
-        <main className="bg-red-200">
-          <img ref={imageRef} alt="coloring background" className="hidden" />
-          <canvas ref={canvasRef}
+        <main className="relative bg-red-200">
+          <canvas ref={canvasBgRef}
+            className="absolute " />
+          <canvas ref={canvasDrawingRef}
+            className={mode === DRAW ? "absolute cursor-crosshair" : isDragging ? "absolute cursor-grabbing" : "absolute cursor-grab"}
+
             onTouchStart={(e) => startDragging(e)}
             onMouseDown={(e) => startDragging(e)}
 
@@ -209,7 +219,6 @@ const Coloring = () => {
             onMouseLeave={finishDragging}
 
             onWheel={(e) => zoomWithWheel(e.deltaY * SCROLL_SENSITIVITY)}
-            className={mode === DRAW ? "cursor-crosshair" : isDragging ? "cursor-grabbing" : "cursor-grab"}
           />
         </main>
         <div className="bg-green-400 absolute right-0">
