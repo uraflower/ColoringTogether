@@ -9,8 +9,8 @@ export const getImageSlots = (images, currentImage, changeCurrentImage, changeSe
                 aria-selected={currentImage === index}
                 className="border border-black relative w-full after:content-[''] after:block after:pb-[100%] cursor-pointer aria-selected:border-amber-400 aria-selected:border-[3px]"
                 onClick={() => {
-                    changeSelectedImage(image.url);
                     changeCurrentImage(index);
+                    changeSelectedImage(image.url);
                 }}
             >
                 <img
