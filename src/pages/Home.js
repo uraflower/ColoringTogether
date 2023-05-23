@@ -26,10 +26,10 @@ const Home = () => {
                 id="logo"
                 src={require("../logo.png")}
                 className="mb-10"
+                className="mb-10 min-w-[540px]"
                 alt="logo"
             />
-            <form method="get"
-                onSubmit={handleSubmit} className="grid gap-4">
+            <div className="grid gap-4">
                 <div className="grid grid-cols-3 items-center justify-items-center">
                     <label>닉네임</label>
                     <input
@@ -43,14 +43,14 @@ const Home = () => {
                         onChange={({ target: { value } }) => setNickname(value)}
                     />
                 </div>
-
                 <input
-                    type="submit"
+                    type="button"
                     id="create-room"
                     value="참가하기"
-                    className="cursor-pointer rounded-xl py-3 px-5 text-xl bg-blue-500 text-white"
+                    className="cursor-pointer rounded-xl py-3 px-5 text-xl bg-amber-400 text-white"
+                    onClick={handleSubmit}
                 />
-            </form>
+            </div>
         </div>
     );
 }
