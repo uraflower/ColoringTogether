@@ -25,9 +25,10 @@ const Home = () => {
             <img
                 id="logo"
                 src={require("../logo.png")}
-                className="mb-10"
                 className="mb-10 min-w-[540px]"
                 alt="logo"
+                width="50%"
+                height="50%"
             />
             <div className="grid gap-4">
                 <div className="grid grid-cols-3 items-center justify-items-center">
