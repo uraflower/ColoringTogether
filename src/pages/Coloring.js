@@ -10,7 +10,7 @@ const DRAW = "DRAW";
 const SCROLL_SENSITIVITY = 0.0005;
 
 const Coloring = () => {
-    const { imageURL } = useLocation();
+    const { state } = useLocation();
     const canvasRef = useRef(null); // canvas는 자체적으로 상태 관리를 함 따로 관리 필요 X
     const [context, setContext] = useState(); // context는 그래픽 드로잉 api를 정의한 인터페이스임
     const imageRef = useRef(null);
@@ -31,8 +31,18 @@ const Coloring = () => {
         context.strokeStyle = color;
         context.lineWidth = 100;
 
+        initImage(canvas);
+
+        // context.translate(canvas.width / 3, canvas.height / 3);
+        context.scale(1, 1);
+        setCameraOffset({ x: canvas.width / 2, y: canvas.height / 2, });
+    }, []);
+
+    const initImage = async (canvas) => {
+        console.log(state);
         const image = imageRef.current;
-        image.src = imageURL;
+        image.src = await state;
+
         // 여기는 그냥 캔버스 크기!
         canvas.height = window.innerHeight * 0.8;
         canvas.width = image.width / image.height * canvas.height;
@@ -41,11 +51,9 @@ const Coloring = () => {
             // 여기서 이미지 크기를 조정
             context.drawImage(image, 0, 0, canvas.width, canvas.height);
         };
+    }
 
-        // context.translate(canvas.width / 3, canvas.height / 3);
-        context.scale(1, 1);
-        setCameraOffset({ x: canvas.width / 2, y: canvas.height / 2, });
-    }, []);
+
 
     const setModeToPan = () => {
         setMode(PAN);

@@ -59,7 +59,7 @@ const Lobby = () => {
 
     const handleJoinRoom = (room) => {
         socket.emit('joinRoom', room);
-        navigate('/Coloring', { imageURL: selectedImage });
+        navigate('/Coloring', { state: selectedImage });
     };
 
     // rooms 값이 변경될 때마다 renderRooms 함수 호출
