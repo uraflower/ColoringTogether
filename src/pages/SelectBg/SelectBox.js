@@ -60,8 +60,6 @@ const SelectBg = () => {
 
 // 그림 도안 탭 컨텐츠
 const ColoringContent = () => {
-    const filterList = ['전체', '꽃', '동물', '캐릭터', '낙서', '아트'];
-    const [currentFilter, setCurrentFilter] = useState(0);
     const [images, setImages] = useState([]);
 
     useEffect(() => {
@@ -73,28 +71,11 @@ const ColoringContent = () => {
             .catch((err) => console.error(err));
     }, []);
 
-    const createFilterButton = () => {
-        return filterList.map((filter, index) => (
-            <button
-                role="tab"
-                aria-selected={currentFilter === index}
-                onClick={() => setCurrentFilter(index)}
-                className="m-2 p-1 text-sm rounded-full aria-selected:bg-indigo-400 aria-selected:text-white">
-                {filter}
-            </button>
-        ))
-    }
-
     return (
         <>
             <div
-                id="filter"
-                className="w-full overflow-auto bg-white">
-                {createFilterButton()}
-            </div>
-            <div
                 id="gallery"
-                className="relative h-[calc(100%-3.5rem)] overflow-auto">
+                className="relative h-[calc(100%-3.5rem)] m-4 overflow-auto">
                 <div
                     id="images"
                     className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] auto-rows-auto gap-5">
