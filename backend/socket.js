@@ -77,7 +77,7 @@ module.exports = (server, app) => {
             const newRoom = await Room.create({
                 title: req.body.title,
                 owner: _owner,
-                // users: req.body.id,
+                image: req.body.image,
             });
             newRoom.populate('owner')
                 .then(() => {

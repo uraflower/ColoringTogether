@@ -10,6 +10,7 @@ const Lobby = () => {
     const [rooms, setRooms] = useState([]);
     const [isModalOpened, setModalOpen] = useState(false);
     const [roomTitle, setRoomTitle] = useState('');
+    const [selectedImage, setSelectedImage] = useState('');
 
     // DB에서 Rooms를 가져오기
     useEffect(() => {
@@ -36,11 +37,16 @@ const Lobby = () => {
         setModalOpen(false);
     }
 
+    const changeSelectedImage = (imageURL) => {
+        setSelectedImage(imageURL);
+    }
+
     const handleCreateRoom = () => {
         // 방 생성
         const body = {
             title: roomTitle,
             id: socket.id,
+            image: selectedImage,
         }
         axios.post('/api/createRoom', body)
             .then((res) => {
@@ -97,7 +103,8 @@ const Lobby = () => {
                             maxLength={20}
                             className="w-full my-2 p-2 outline-none rounded border-2 border-gray-400"
                         />
-                        <SelectBox />
+                        <SelectBox
+                            changeSelectedImage={changeSelectedImage} />
                     </Modal>
                 </div>
                 <div id="room-list"

@@ -4,11 +4,12 @@ import { useState } from 'react';
 import { getImageSlots } from '../../utils/getImageSlots';
 
 // 배경 이미지 선택 박스
-const SelectBg = () => {
+const SelectBox = ({ changeSelectedImage }) => {
     const tabList = [
         {
             tabName: "그림 도안",
-            content: <ColoringContent />
+            content: <ColoringContent
+                changeSelectedImage={changeSelectedImage} />
         },
         {
             tabName: "도화지",
@@ -59,8 +60,12 @@ const SelectBg = () => {
 }
 
 // 그림 도안 탭 컨텐츠
-const ColoringContent = () => {
+const ColoringContent = ({ changeSelectedImage }) => {
     const [images, setImages] = useState([]);
+    const [currentImage, setCurrentImage] = useState(0);
+    const changeCurrentImage = (index) => {
+        setCurrentImage(index);
+    }
 
     useEffect(() => {
         axios.get('/api/getImages')
@@ -79,11 +84,11 @@ const ColoringContent = () => {
                 <div
                     id="images"
                     className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] auto-rows-auto gap-5">
-                    {getImageSlots(images)}
+                    {getImageSlots(images, currentImage, changeCurrentImage, changeSelectedImage)}
                 </div>
             </div>
         </>
     )
 }
 
-export default SelectBg;
+export default SelectBox;

@@ -18,6 +18,10 @@ const roomSchema = new mongoose.Schema({
     users: {
         type: Array,
         default: []
+    },
+    image: {
+        type: String,   // url
+        required: true,
     }
 });
 
