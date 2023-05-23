@@ -26,6 +26,7 @@ const SelectBg = ({ changeSelectedImage }) => {
     const createTabs = () => {
         return tabList.map((tab, index) => (
             <button
+                key={index}
                 role="tab"
                 aria-selected={currentTab === index}
                 onClick={() => setCurrentTab(index)}
