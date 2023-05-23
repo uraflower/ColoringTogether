@@ -1,6 +1,7 @@
 const { Server } = require("socket.io");
 const User = require("./model/User");
 const Room = require("./model/Room");
+const Image = require("./model/Image");
 
 module.exports = (server, app) => {
     // socket 초기화
@@ -33,6 +34,15 @@ module.exports = (server, app) => {
                 })
                 .catch((err) => console.error(err));
         });
+
+        app.get('/api/getImages', (req, res) => {
+            Image.find()
+                .then((data) => {
+                    res.send(data);
+                    console.log('get images successfully');
+                })
+                .catch((err) => console.error(err));
+        })
 
         // load all rooms from DB
         app.get('/api/getRooms', (req, res) => {
