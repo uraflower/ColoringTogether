@@ -9,7 +9,7 @@ export const getImageSlots = (images) => {
             // onClick={}
             >
                 <img
-                    src={image.path}
+                    src={image.url}
                     className="absolute object-cover object-center w-full h-full" />
             </div>
         );
