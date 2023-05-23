@@ -74,13 +74,13 @@ const ColoringContent = () => {
     }, []);
 
     const createFilterButton = () => {
-        return filterList.map((el, index) => (
+        return filterList.map((filter, index) => (
             <button
                 role="tab"
                 aria-selected={currentFilter === index}
                 onClick={() => setCurrentFilter(index)}
                 className="m-2 p-1 text-sm rounded-full aria-selected:bg-indigo-400 aria-selected:text-white">
-                {el}
+                {filter}
             </button>
         ))
     }
