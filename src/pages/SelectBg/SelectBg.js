@@ -1,11 +1,9 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom';
 import Chat from '../../components/chat';
 import SelectBox from './SelectBox';
 import VoteBox from './VoteBox';
 
+// 배경 이미지 선택 및 투표 화면
 const SelectBg = () => {
-    const nickname = useLocation().state.nickname;
 
     return (
         <div className="flex items-center justify-between">
@@ -25,7 +23,7 @@ const SelectBg = () => {
                 </div>
             </div>
             <div>
-                <Chat nickname={nickname} />
+                <Chat />
             </div>
         </div>
     )
