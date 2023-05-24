@@ -34,7 +34,7 @@ const Coloring = () => {
     _contextDrawing.strokeStyle = color;
     _contextDrawing.lineWidth = 100;
 
-    initImage(contextBg, canvasBg);
+    if (contextBg) { initImage(contextBg, canvasBg); }
     canvasDrawing.width = canvasBg.width;
     canvasDrawing.height = canvasBg.height;
     // context.translate(canvasDrawing.width / 3, canvasDrawing.height / 3);
