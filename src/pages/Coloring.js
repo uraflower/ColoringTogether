@@ -1,12 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import Chat from "../components/chat";
 import { MdOutlineBrush, MdColorLens } from "react-icons/md";
-import { TbArrowsMove, TbZoomIn, TbZoomOut, TbMinus, TbPlus } from "react-icons/tb";
+import { TbArrowsMove, TbEraser, TbZoomIn, TbZoomOut, TbMinus, TbPlus } from "react-icons/tb";
 import { SketchPicker } from 'react-color';
 import { useLocation } from "react-router-dom";
 
 const PAN = "PAN";
 const DRAW = "DRAW";
+const ERASE = "ERASE";
 const SCROLL_SENSITIVITY = 0.0005;
 
 const Coloring = () => {
@@ -16,7 +17,7 @@ const Coloring = () => {
   const [contextDrawing, setContextDrawing] = useState(); // context는 그래픽 드로잉 api를 정의한 인터페이스임
   const [contextBg, setContextBg] = useState();
   const imageRef = useRef(null);
-  const [mode, setMode] = useState(PAN);   // pan / draw
+  const [mode, setMode] = useState(PAN);   // PAN / DRAW / ERASE
   const [isDragging, setIsDragging] = useState(false);
   const [isHidden, setIsHidden] = useState(true);
   const [color, setColor] = useState("#000000");
@@ -66,6 +67,10 @@ const Coloring = () => {
 
   const setModeToDraw = () => {
     setMode(DRAW);
+  };
+
+  const setModeToErase = () => {
+    setMode(ERASE);
   };
 
   const decreaseBrushSize = () => {
@@ -136,10 +141,26 @@ const Coloring = () => {
   };
 
   const drawing = ({ nativeEvent }) => {
-    console.log(nativeEvent);
+    // console.log(nativeEvent);
 
     const { offsetX, offsetY } = nativeEvent;
     if (contextDrawing) {
+      if (!isDragging) {
+        contextDrawing.beginPath();
+        contextDrawing.moveTo(offsetX, offsetY);
+      } else {
+        contextDrawing.lineTo(offsetX, offsetY);
+        contextDrawing.stroke();
+      }
+    }
+  };
+
+  const erasing = ({ nativeEvent }) => {
+    // console.log(nativeEvent);
+
+    const { offsetX, offsetY } = nativeEvent;
+    if (contextDrawing) {
+      contextDrawing.strokeStyle = "#FFFFFF";
       if (!isDragging) {
         contextDrawing.beginPath();
         contextDrawing.moveTo(offsetX, offsetY);
@@ -178,6 +199,9 @@ const Coloring = () => {
         </button>
         <button onClick={setModeToDraw}>
           <MdOutlineBrush />
+        </button>
+        <button onClick={setModeToErase}>
+          <TbEraser />
         </button>
         <button onClick={zoomIn}>
           <TbZoomIn />
