@@ -228,21 +228,21 @@ const Coloring = () => {
       <div className="bg-gray-200 w-full flex">
         <main className="relative bg-red-200">
           <canvas ref={canvasBgRef}
-            className="absolute " />
-          <canvas ref={canvasDrawingRef}
-            className={mode === DRAW ? "absolute cursor-crosshair" : isDragging ? "absolute cursor-grabbing" : "absolute cursor-grab"}
-
+            className={styleOnCanvas()}
             onTouchStart={(e) => startDragging(e)}
             onMouseDown={(e) => startDragging(e)}
 
-            onTouchMove={mode === DRAW ? drawing : panning}
-            onMouseMove={mode === DRAW ? drawing : panning}
+            onTouchMove={handleMouseMove()} // 실제 draw는 아래 캔버스에서 일어남
+            onMouseMove={handleMouseMove()} // 이 캔버스가 위에 있으니까 mouse event handling을 여기서 해줌
 
             onTouchEnd={finishDragging}
             onMouseUp={finishDragging}
             onMouseLeave={finishDragging}
 
             onWheel={(e) => zoomWithWheel(e.deltaY * SCROLL_SENSITIVITY)}
+          />
+          <canvas ref={canvasDrawingRef}
+            className="absolute"
           />
         </main>
         <div className="bg-green-400 absolute right-0">
@@ -251,6 +251,33 @@ const Coloring = () => {
       </div>
     </>
   );
+
+  function styleOnCanvas() {
+    switch (mode) {
+      case PAN:
+        if (isDragging)
+          return "absolute cursor-grabbing z-10";
+        else
+          return "absolute cursor-grab z-10";
+      case DRAW:
+        return "absolute cursor-crosshair z-10";
+      case ERASE:
+        return "absolute z-10";
+      default:
+        return "absolute z-10"
+    }
+  }
+
+  function handleMouseMove() {
+    switch (mode) {
+      case PAN:
+        return panning;
+      case DRAW:
+        return drawing;
+      case ERASE:
+        return erasing;
+    }
+  }
 }
 
 export default Coloring;
