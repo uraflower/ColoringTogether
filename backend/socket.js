@@ -73,6 +73,15 @@ module.exports = (server, app) => {
       return user._id;
     };
 
+    app.post('/api/getUserInfo', async (req, res) => {
+      await User.findOne({ socketId: req.body.id })
+        .exec()
+        .then((data) => {
+          res.send(data);
+        })
+        .catch((err) => console.error(err));
+    });
+
     // create room
     app.post('/api/createRoom', async (req, res) => {
       const _owner = await getUserObjectId(req.body.id);

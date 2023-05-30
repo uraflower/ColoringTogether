@@ -1,28 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import './chat.css';
 import socket from '../utils/socket';
+import axios from 'axios';
 
-const Chat = (props) => {
-  const [chat, setChat] = useState({ nickname: props.nickname, message: '' });
+const Chat = () => {
+  const [nickname, setNickname] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
+    getUserInfo();
     receiveMessage();
   }, []);
 
+  const getUserInfo = () => {
+    const body = { id: socket.id };
+    axios
+      .post('/api/getUserInfo', body)
+      .then((res) => {
+        console.log(res.data);
+        setNickname(res.data.nickname);
+      })
+      .catch((err) => console.error(err));
+  };
+
   const onTypeMessage = (event) => {
-    setChat({ ...chat, [event.target.name]: event.target.value });
+    setMessage(event.target.value);
   };
 
   // 메시지 전송
   const sendMessage = (event) => {
     event.preventDefault();
-    const { nickname, message } = chat;
 
     if (!message) {
       return;
     } else {
       socket.emit('chat message', { nickname, message });
-      setChat({ nickname, message: '' });
+      setMessage('');
     }
   };
 
@@ -55,7 +68,7 @@ const Chat = (props) => {
           form='form'
           id='message'
           name='message'
-          value={chat.message}
+          value={message}
           onChange={onTypeMessage}
           maxLength='150'
           className='focus:outline-none flex-grow break-words resize-none p-3 text-sm'
