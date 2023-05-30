@@ -16,7 +16,6 @@ const Coloring = () => {
   const canvasBgRef = useRef(null);
   const [contextDrawing, setContextDrawing] = useState(); // context는 그래픽 드로잉 api를 정의한 인터페이스임
   const [contextBg, setContextBg] = useState();
-  const imageRef = useRef(null);
   const [mode, setMode] = useState(PAN);   // PAN / DRAW / ERASE
   const [isDragging, setIsDragging] = useState(false);
   const [isHidden, setIsHidden] = useState(true);
