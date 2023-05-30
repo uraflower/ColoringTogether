@@ -23,6 +23,7 @@ const Coloring = () => {
   const [cameraOffset, setCameraOffset] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
   const [dragStartPoint, setDragStartPoint] = useState({ x: 0, y: 0 });
+  const [brushSize, setBrushSize] = useState(1);
   const image = new Image();
   const [canvasReady, setCanvasReady] = useState(false);
 
@@ -33,8 +34,6 @@ const Coloring = () => {
     const _contextBg = canvasBg?.getContext('2d');
     setContextDrawing(_contextDrawing);
     setContextBg(_contextBg);
-    _contextDrawing.strokeStyle = color;
-    _contextDrawing.lineWidth = 100;
 
     if (contextBg && contextDrawing) {
       initImage();
@@ -78,13 +77,19 @@ const Coloring = () => {
     setMode(ERASE);
   };
 
-  const decreaseBrushSize = () => {
-    contextDrawing.lineWidth -= 1;
+  const increaseBrushSize = () => {
+    changeBrushSize(contextDrawing.lineWidth + 1);
   };
 
-  const increaseBrushSize = () => {
-    contextDrawing.lineWidth += 1;
+  const decreaseBrushSize = () => {
+    changeBrushSize(contextDrawing.lineWidth - 1);
   };
+
+  const changeBrushSize = (value) => {
+    console.log(value);
+    setBrushSize(value);
+    contextDrawing.lineWidth = value;
+  }
 
   const setStrokeColor = (pickedColor) => {
     setColor(pickedColor);
@@ -218,6 +223,14 @@ const Coloring = () => {
         <button onClick={decreaseBrushSize}>
           <TbMinus />
         </button>
+        <input
+          type="range"
+          name="brushSize"
+          value={brushSize}
+          min={1}
+          max={50}
+          onChange={(event) => changeBrushSize(event.target.value)}
+        />
         <button onClick={increaseBrushSize}>
           <TbPlus />
         </button>
