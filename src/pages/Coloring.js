@@ -25,6 +25,7 @@ const Coloring = () => {
   const [scale, setScale] = useState(1);
   const [dragStartPoint, setDragStartPoint] = useState({ x: 0, y: 0 });
   const image = new Image();
+  const [canvasReady, setCanvasReady] = useState(false);
 
   useEffect(() => {
     const canvasDrawing = canvasDrawingRef.current;
@@ -45,7 +46,7 @@ const Coloring = () => {
     // contextDrawing.scale(1, 1);
     // contextBg.scale(1, 1);
     setCameraOffset({ x: canvasDrawing.width / 2, y: canvasDrawing.height / 2, });
-  }, []);
+  }, [contextBg, contextDrawing]);
 
   const initImage = async () => {
     console.log(state);
@@ -56,11 +57,13 @@ const Coloring = () => {
     image.onload = () => {
       canvasBg.height = window.innerHeight * 0.8;
       canvasBg.width = image.width * canvasBg.height / image.height;
-      canvasDrawing.width = canvasBg.width;
       canvasDrawing.height = canvasBg.height;
+      canvasDrawing.width = canvasBg.width;
 
       // image size 조절
       context.drawImage(image, 0, 0, canvasBg.width, canvasBg.height);
+      console.log(canvasBg.width, canvasBg.height)
+      setCanvasReady(true);
     };
   }
 
@@ -220,7 +223,7 @@ const Coloring = () => {
           <TbPlus />
         </button>
         <SketchPicker
-          className={isHidden ? "hidden" : "absolute z-30"}
+          className={isHidden ? "hidden" : "absolute z-50"}
           color={color}
           onChange={(color) => setStrokeColor(color.hex)}
         />
@@ -245,8 +248,13 @@ const Coloring = () => {
             onWheel={(e) => zoomWithWheel(e.deltaY * SCROLL_SENSITIVITY)}
           />
           <canvas ref={canvasDrawingRef}
-            className="absolute"
+            className="absolute z-30"
           />
+          {
+            canvasReady ?
+              <div style={{ width: canvasBgRef.current.width, height: canvasBgRef.current.height }} className="absolute bg-white z-20"></div>
+              : <></>
+          }
         </main>
         <div className="bg-green-400 float-right">
           <Chat />
@@ -259,15 +267,15 @@ const Coloring = () => {
     switch (mode) {
       case PAN:
         if (isDragging)
-          return "absolute cursor-grabbing z-10";
+          return "absolute cursor-grabbing z-40";
         else
-          return "absolute cursor-grab z-10";
+          return "absolute cursor-grab z-40";
       case DRAW:
-        return "absolute cursor-crosshair z-10";
+        return "absolute cursor-crosshair z-40";
       case ERASE:
-        return "absolute z-10";
+        return "absolute z-40";
       default:
-        return "absolute z-10"
+        return "absolute z-40"
     }
   }
 
