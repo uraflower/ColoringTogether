@@ -262,8 +262,6 @@ const Coloring = () => {
       </header>
       <div className="bg-gray-200 flex">
         <main className="relative bg-neutral-500 w-full h-[calc(100vh-3rem)] flex justify-center items-center">
-          <canvas
-            ref={canvasCursorRef} className="absolute z-30" />
           <canvas ref={canvasBgRef}
             className={styleOnCanvas()}
             onTouchStart={(e) => startDragging(e)}
@@ -278,12 +276,14 @@ const Coloring = () => {
 
             onWheel={(e) => zoomWithWheel(e.deltaY * SCROLL_SENSITIVITY)}
           />
+          <canvas ref={canvasCursorRef}
+            className="absolute z-30" />
           <canvas ref={canvasDrawingRef}
-            className="absolute z-30"
+            className="absolute z-20"
           />
           {
             canvasReady ?
-              <div style={{ width: canvasBgRef.current.width, height: canvasBgRef.current.height }} className="absolute bg-white z-20"></div>
+              <div style={{ width: canvasBgRef.current.width, height: canvasBgRef.current.height }} className="absolute bg-white z-10"></div>
               : <></>
           }
         </main>
