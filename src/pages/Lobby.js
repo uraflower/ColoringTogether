@@ -110,7 +110,7 @@ const Lobby = () => {
               placeholder='방 제목을 입력하세요'
               onChange={(event) => {
                 setRoomTitle(event.target.value);
-                roomTitle.length != 0 ? setIsValid(true) : setIsValid(false);
+                roomTitle.trim() != '' ? setIsValid(true) : setIsValid(false);
               }}
               autoFocus={true}
               maxLength={20}
