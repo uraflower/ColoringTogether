@@ -61,7 +61,6 @@ const Coloring = () => {
 
       // image size 조절
       context.drawImage(image, 0, 0, canvasBg.width, canvasBg.height);
-      console.log('canvasBg:', canvasBg.width, canvasBg.height);
     };
   }
 
