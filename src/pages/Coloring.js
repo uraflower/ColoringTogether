@@ -100,7 +100,6 @@ const Coloring = () => {
 
   const setBrushColor = (pickedColor) => {
     setColor(pickedColor);
-    contextDrawing.strokeStyle = pickedColor;
   };
 
   const hide = () => {
@@ -158,8 +157,6 @@ const Coloring = () => {
   };
 
   const drawing = ({ nativeEvent }) => {
-    // console.log(nativeEvent);
-
     const { offsetX, offsetY } = nativeEvent;
 
     // show cursor
@@ -171,30 +168,23 @@ const Coloring = () => {
       contextCursor.fill();
     }
 
-    if (contextDrawing) {
-      if (!isDragging) {
-        contextDrawing.beginPath();
-        contextDrawing.moveTo(offsetX, offsetY);
-      } else {
-        contextDrawing.lineTo(offsetX, offsetY);
-        contextDrawing.stroke();
-      }
+    // draw
+    if (contextDrawing && isDragging) {
+      contextDrawing.beginPath();
+      contextDrawing.arc(offsetX, offsetY, brushSize, 0, 2 * Math.PI);
+      contextDrawing.fillStyle = color;
+      contextDrawing.fill();
     }
   };
 
   const erasing = ({ nativeEvent }) => {
-    // console.log(nativeEvent);
-
     const { offsetX, offsetY } = nativeEvent;
-    if (contextDrawing) {
-      contextDrawing.strokeStyle = "#FFFFFF";
-      if (!isDragging) {
-        contextDrawing.beginPath();
-        contextDrawing.moveTo(offsetX, offsetY);
-      } else {
-        contextDrawing.lineTo(offsetX, offsetY);
-        contextDrawing.stroke();
-      }
+
+    if (contextDrawing && isDragging) {
+      contextDrawing.beginPath();
+      contextDrawing.arc(offsetX, offsetY, brushSize, 0, 2 * Math.PI);
+      contextDrawing.fillStyle = "#FFFFFF";
+      contextDrawing.fill();
     }
   };
 
