@@ -98,7 +98,7 @@ const Coloring = () => {
     contextDrawing.lineWidth = value;
   }
 
-  const setStrokeColor = (pickedColor) => {
+  const setBrushColor = (pickedColor) => {
     setColor(pickedColor);
     contextDrawing.strokeStyle = pickedColor;
   };
@@ -244,7 +244,7 @@ const Coloring = () => {
         <SketchPicker
           className={isHidden ? "hidden" : "absolute z-50"}
           color={color}
-          onChange={(color) => setStrokeColor(color.hex)}
+          onChange={(color) => setBrushColor(color.hex)}
         />
         <button onClick={hide}>
           <MdColorLens />
