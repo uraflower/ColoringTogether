@@ -196,7 +196,7 @@ const Coloring = () => {
 
   return (
     <>
-      <header className="bg-amber-400 p-2 space-x-1">
+      <header className="bg-amber-400 p-3 space-x-1">
         <button onClick={setModeToPan}>
           <TbArrowsMove />
         </button>
@@ -228,8 +228,8 @@ const Coloring = () => {
           <MdColorLens />
         </button>
       </header>
-      <div className="bg-gray-200 w-full flex">
-        <main className="relative bg-red-200">
+      <div className="bg-gray-200 flex">
+        <main className="relative bg-neutral-500 w-full h-[calc(100vh-3rem)] flex justify-center items-center">
           <canvas ref={canvasBgRef}
             className={styleOnCanvas()}
             onTouchStart={(e) => startDragging(e)}
@@ -248,7 +248,7 @@ const Coloring = () => {
             className="absolute"
           />
         </main>
-        <div className="bg-green-400 absolute right-0">
+        <div className="bg-green-400 float-right">
           <Chat />
         </div>
       </div>
