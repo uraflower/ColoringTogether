@@ -180,6 +180,16 @@ const Coloring = () => {
   const erasing = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
 
+    // show cursor outlined
+    if (contextCursor) {
+      contextCursor.clearRect(0, 0, canvasCursorRef.current.width, canvasCursorRef.current.height); // clear prev cursor
+      contextCursor.beginPath();
+      contextCursor.arc(offsetX, offsetY, brushSize, 0, 2 * Math.PI);
+      contextCursor.strokeStyle = "#454545";
+      contextCursor.stroke();
+    }
+
+    // erase
     if (contextDrawing && isDragging) {
       contextDrawing.beginPath();
       contextDrawing.arc(offsetX, offsetY, brushSize, 0, 2 * Math.PI);
@@ -294,7 +304,7 @@ const Coloring = () => {
       case DRAW:
         return "absolute cursor-none z-40";
       case ERASE:
-        return "absolute z-40";
+        return "absolute cursor-none z-40";
       default:
         return "absolute z-40"
     }
