@@ -14,6 +14,8 @@ const Coloring = () => {
   const { state } = useLocation();
   const canvasDrawingRef = useRef(null); // canvas는 자체적으로 상태 관리를 함 따로 관리 필요 X
   const canvasBgRef = useRef(null);
+  const canvasCursorRef = useRef(null);
+  const [contextCursor, setContextCursor] = useState();
   const [contextDrawing, setContextDrawing] = useState(); // context는 그래픽 드로잉 api를 정의한 인터페이스임
   const [contextBg, setContextBg] = useState();
   const [mode, setMode] = useState(PAN);   // PAN / DRAW / ERASE
@@ -30,14 +32,17 @@ const Coloring = () => {
   useEffect(() => {
     const canvasDrawing = canvasDrawingRef.current;
     const canvasBg = canvasBgRef.current;
+    const canvasCursor = canvasCursorRef.current;
     const _contextDrawing = canvasDrawing?.getContext('2d');
     const _contextBg = canvasBg?.getContext('2d');
+    const _contextCursor = canvasCursor?.getContext('2d');
     setContextDrawing(_contextDrawing);
     setContextBg(_contextBg);
+    setContextCursor(_contextCursor);
 
     if (contextBg && contextDrawing) {
       initImage();
-      setCanvasSize(contextBg, canvasBg, canvasDrawing);
+      setCanvasSize(contextBg, canvasBg, canvasDrawing, canvasCursor);
     }
 
     // context.translate(canvasDrawing.width / 3, canvasDrawing.height / 3);
@@ -51,12 +56,14 @@ const Coloring = () => {
     image.src = await state;
   }
 
-  const setCanvasSize = (context, canvasBg, canvasDrawing) => {
+  const setCanvasSize = (context, canvasBg, canvasDrawing, canvasCursor) => {
     image.onload = () => {
       canvasBg.height = window.innerHeight * 0.8;
       canvasBg.width = image.width * canvasBg.height / image.height;
       canvasDrawing.height = canvasBg.height;
       canvasDrawing.width = canvasBg.width;
+      canvasCursor.height = canvasBg.height;
+      canvasCursor.width = canvasBg.width;
 
       // image size 조절
       context.drawImage(image, 0, 0, canvasBg.width, canvasBg.height);
@@ -245,6 +252,8 @@ const Coloring = () => {
       </header>
       <div className="bg-gray-200 flex">
         <main className="relative bg-neutral-500 w-full h-[calc(100vh-3rem)] flex justify-center items-center">
+          <canvas
+            ref={canvasCursorRef} className="absolute z-30" />
           <canvas ref={canvasBgRef}
             className={styleOnCanvas()}
             onTouchStart={(e) => startDragging(e)}
