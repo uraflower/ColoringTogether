@@ -107,8 +107,13 @@ module.exports = (server, app) => {
         .catch((err) => console.error(err));
     });
 
+    const getRoomInfo = async (roomName) => {
+      const room = await Room.findOne({ title: roomName }).exec();
+      return room;
+    };
+
     // join room
-    socket.on('joinRoom', (roomName) => {
+    socket.on('joinRoom', async (roomName) => {
       socket.join(roomName);
       const index = rooms.findIndex((room) => room.title === roomName);
 
@@ -118,6 +123,9 @@ module.exports = (server, app) => {
 
       console.log(`${socket.id} joined room "${roomName}"`);
       console.log('room info:', rooms[index]);
+
+      const room = await getRoomInfo(roomName);
+      io.emit('sendRoomImage', room.image);
       sendRooms();
     });
 
