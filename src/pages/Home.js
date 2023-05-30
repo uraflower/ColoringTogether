@@ -22,7 +22,7 @@ const Home = () => {
   };
 
   return (
-    <div className='flex justify-center items-center flex-col'>
+    <div className='flex justify-center items-center flex-col h-screen'>
       <img
         id='logo'
         src={require('../logo.png')}
