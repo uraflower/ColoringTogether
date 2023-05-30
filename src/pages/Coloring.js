@@ -24,6 +24,7 @@ const Coloring = () => {
   const [cameraOffset, setCameraOffset] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
   const [dragStartPoint, setDragStartPoint] = useState({ x: 0, y: 0 });
+  const image = new Image();
 
   useEffect(() => {
     const canvasDrawing = canvasDrawingRef.current;
@@ -35,29 +36,32 @@ const Coloring = () => {
     _contextDrawing.strokeStyle = color;
     _contextDrawing.lineWidth = 100;
 
-    if (contextBg) { initImage(contextBg, canvasBg); }
-    canvasDrawing.width = canvasBg.width;
-    canvasDrawing.height = canvasBg.height;
+    if (contextBg && contextDrawing) {
+      initImage();
+      setCanvasSize(contextBg, canvasBg, canvasDrawing);
+    }
+
     // context.translate(canvasDrawing.width / 3, canvasDrawing.height / 3);
     // contextDrawing.scale(1, 1);
     // contextBg.scale(1, 1);
     setCameraOffset({ x: canvasDrawing.width / 2, y: canvasDrawing.height / 2, });
   }, []);
 
-  const initImage = async (context, canvas) => {
+  const initImage = async () => {
     console.log(state);
-    // const image = imageRef.current;
-    const image = new Image();
-    console.log(image);
     image.src = await state;
+  }
 
-    // 여기는 그냥 캔버스 크기!
-    canvas.height = window.innerHeight * 0.8;
-    canvas.width = image.width / image.height * canvas.height;
-
+  const setCanvasSize = (context, canvasBg, canvasDrawing) => {
     image.onload = () => {
-      // 여기서 이미지 크기를 조정
-      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      canvasBg.height = window.innerHeight * 0.8;
+      canvasBg.width = image.width * canvasBg.height / image.height;
+      canvasDrawing.width = canvasBg.width;
+      canvasDrawing.height = canvasBg.height;
+
+      // image size 조절
+      context.drawImage(image, 0, 0, canvasBg.width, canvasBg.height);
+      console.log('canvasBg:', canvasBg.width, canvasBg.height);
     };
   }
 
