@@ -136,7 +136,7 @@ module.exports = (server, app) => {
     });
 
     socket.on('draw', ({ offsetX, offsetY, brushSize, color }) => {
-      socket.broadcast.emit('draw', { offsetX, offsetY, brushSize, color });
+      socket.broadcast.emit('drawB', { offsetX, offsetY, brushSize, color });
       console.log(`someone is drawing`);
     });
 

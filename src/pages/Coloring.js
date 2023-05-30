@@ -39,7 +39,7 @@ const Coloring = () => {
 
   useEffect(() => {
     listenDraw();
-  }, []);
+  }, [canvasReady]);
 
   useEffect(() => {
     const canvasDrawing = canvasDrawingRef.current;
@@ -170,12 +170,14 @@ const Coloring = () => {
   };
 
   const listenDraw = () => {
-    socket.on('draw', ({ offsetX, offsetY, brushSize, color }) => {
-      contextDrawing.beginPath();
-      contextDrawing.arc(offsetX, offsetY, brushSize, 0, 2 * Math.PI);
-      contextDrawing.fillStyle = color;
-      contextDrawing.fill();
-    });
+    if (contextDrawing) {
+      socket.on('drawB', ({ offsetX, offsetY, brushSize, color }) => {
+        contextDrawing.beginPath();
+        contextDrawing.arc(offsetX, offsetY, brushSize, 0, 2 * Math.PI);
+        contextDrawing.fillStyle = color;
+        contextDrawing.fill();
+      });
+    }
   };
 
   const drawing = ({ nativeEvent }) => {
