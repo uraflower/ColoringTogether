@@ -11,6 +11,7 @@ import {
 } from 'react-icons/tb';
 import { SketchPicker } from 'react-color';
 import { useLocation } from 'react-router-dom';
+import socket from '../utils/socket';
 
 const PAN = 'PAN';
 const DRAW = 'DRAW';
@@ -35,6 +36,10 @@ const Coloring = () => {
   const [brushSize, setBrushSize] = useState(1);
   const image = new Image();
   const [canvasReady, setCanvasReady] = useState(false);
+
+  useEffect(() => {
+    listenDraw();
+  }, []);
 
   useEffect(() => {
     const canvasDrawing = canvasDrawingRef.current;
@@ -164,6 +169,15 @@ const Coloring = () => {
     setIsDragging(false);
   };
 
+  const listenDraw = () => {
+    socket.on('draw', ({ offsetX, offsetY, brushSize, color }) => {
+      contextDrawing.beginPath();
+      contextDrawing.arc(offsetX, offsetY, brushSize, 0, 2 * Math.PI);
+      contextDrawing.fillStyle = color;
+      contextDrawing.fill();
+    });
+  };
+
   const drawing = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
 
@@ -187,6 +201,7 @@ const Coloring = () => {
       contextDrawing.arc(offsetX, offsetY, brushSize, 0, 2 * Math.PI);
       contextDrawing.fillStyle = color;
       contextDrawing.fill();
+      socket.emit('draw', { offsetX, offsetY, brushSize, color });
     }
   };
 

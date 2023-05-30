@@ -127,6 +127,11 @@ module.exports = (server, app) => {
       console.log(`[CHAT]${nickname}: ${message}`);
     });
 
+    socket.on('draw', ({ offsetX, offsetY, brushSize, color }) => {
+      socket.broadcast.emit('draw', { offsetX, offsetY, brushSize, color });
+      console.log(`someone is drawing`);
+    });
+
     // disconnect : leave user from room & delete user info from DB
     socket.on('disconnect', () => {
       const index = rooms.findIndex((room) => room.users.includes(socket.id));
