@@ -135,9 +135,16 @@ module.exports = (server, app) => {
       console.log(`[CHAT]${nickname}: ${message}`);
     });
 
+    // real-time drawing
     socket.on('draw', ({ offsetX, offsetY, brushSize, color }) => {
       socket.broadcast.emit('drawB', { offsetX, offsetY, brushSize, color });
       console.log(`someone is drawing`);
+    });
+
+    // real-time erasing
+    socket.on('erase', ({ offsetX, offsetY, brushSize }) => {
+      socket.broadcast.emit('eraseB', { offsetX, offsetY, brushSize });
+      console.log(`someone is erasing`);
     });
 
     // disconnect : leave user from room & delete user info from DB

@@ -39,6 +39,7 @@ const Coloring = () => {
 
   useEffect(() => {
     listenDraw();
+    listenErasing();
   }, [canvasReady]);
 
   useEffect(() => {
@@ -207,6 +208,17 @@ const Coloring = () => {
     }
   };
 
+  const listenErasing = () => {
+    if (contextDrawing) {
+      socket.on('eraseB', ({ offsetX, offsetY, brushSize }) => {
+        contextDrawing.beginPath();
+        contextDrawing.arc(offsetX, offsetY, brushSize, 0, 2 * Math.PI);
+        contextDrawing.fillStyle = '#FFFFFF';
+        contextDrawing.fill();
+      });
+    }
+  };
+
   const erasing = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
 
@@ -230,6 +242,7 @@ const Coloring = () => {
       contextDrawing.arc(offsetX, offsetY, brushSize, 0, 2 * Math.PI);
       contextDrawing.fillStyle = '#FFFFFF';
       contextDrawing.fill();
+      socket.emit('erase', { offsetX, offsetY, brushSize });
     }
   };
 
