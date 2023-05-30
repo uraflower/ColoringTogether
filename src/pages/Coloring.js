@@ -1,13 +1,20 @@
-import React, { useRef, useState, useEffect } from "react";
-import Chat from "../components/chat";
-import { MdOutlineBrush, MdColorLens } from "react-icons/md";
-import { TbArrowsMove, TbEraser, TbZoomIn, TbZoomOut, TbMinus, TbPlus } from "react-icons/tb";
+import React, { useRef, useState, useEffect } from 'react';
+import Chat from '../components/chat';
+import { MdOutlineBrush, MdColorLens } from 'react-icons/md';
+import {
+  TbArrowsMove,
+  TbEraser,
+  TbZoomIn,
+  TbZoomOut,
+  TbMinus,
+  TbPlus,
+} from 'react-icons/tb';
 import { SketchPicker } from 'react-color';
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
-const PAN = "PAN";
-const DRAW = "DRAW";
-const ERASE = "ERASE";
+const PAN = 'PAN';
+const DRAW = 'DRAW';
+const ERASE = 'ERASE';
 const SCROLL_SENSITIVITY = 0.0005;
 
 const Coloring = () => {
@@ -18,10 +25,10 @@ const Coloring = () => {
   const [contextCursor, setContextCursor] = useState();
   const [contextDrawing, setContextDrawing] = useState(); // context는 그래픽 드로잉 api를 정의한 인터페이스임
   const [contextBg, setContextBg] = useState();
-  const [mode, setMode] = useState(PAN);   // PAN / DRAW / ERASE
+  const [mode, setMode] = useState(PAN); // PAN / DRAW / ERASE
   const [isDragging, setIsDragging] = useState(false);
   const [isHidden, setIsHidden] = useState(true);
-  const [color, setColor] = useState("#000000");
+  const [color, setColor] = useState('#000000');
   const [cameraOffset, setCameraOffset] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
   const [dragStartPoint, setDragStartPoint] = useState({ x: 0, y: 0 });
@@ -48,18 +55,21 @@ const Coloring = () => {
     // context.translate(canvasDrawing.width / 3, canvasDrawing.height / 3);
     // contextDrawing.scale(1, 1);
     // contextBg.scale(1, 1);
-    setCameraOffset({ x: canvasDrawing.width / 2, y: canvasDrawing.height / 2, });
+    setCameraOffset({
+      x: canvasDrawingRef.current.width / 2,
+      y: canvasDrawingRef.current.height / 2,
+    });
   }, [contextBg, contextDrawing]);
 
   const initImage = async () => {
     console.log(state);
     image.src = await state;
-  }
+  };
 
   const setCanvasSize = (context, canvasBg, canvasDrawing, canvasCursor) => {
     image.onload = () => {
       canvasBg.height = window.innerHeight * 0.8;
-      canvasBg.width = image.width * canvasBg.height / image.height;
+      canvasBg.width = (image.width * canvasBg.height) / image.height;
       canvasDrawing.height = canvasBg.height;
       canvasDrawing.width = canvasBg.width;
       canvasCursor.height = canvasBg.height;
@@ -67,10 +77,10 @@ const Coloring = () => {
 
       // image size 조절
       context.drawImage(image, 0, 0, canvasBg.width, canvasBg.height);
-      console.log(canvasBg.width, canvasBg.height)
+      console.log(canvasBg.width, canvasBg.height);
       setCanvasReady(true);
     };
-  }
+  };
 
   const setModeToPan = () => {
     setMode(PAN);
@@ -96,7 +106,7 @@ const Coloring = () => {
     console.log(value);
     setBrushSize(value);
     contextDrawing.lineWidth = value;
-  }
+  };
 
   const setBrushColor = (pickedColor) => {
     setColor(pickedColor);
@@ -118,9 +128,8 @@ const Coloring = () => {
     console.log(zoomAmount);
     if (zoomAmount) {
       setScale(scale + zoomAmount);
-    }
-    else if (zoomFactor) {
-      // scale = zoomFactor * 
+    } else if (zoomFactor) {
+      // scale = zoomFactor *
     }
     setScale(Math.min(scale, 5));
     setScale(Math.max(scale, 0.1));
@@ -136,8 +145,7 @@ const Coloring = () => {
         x: e.touches[0].clientX,
         y: e.touches[0].clientY,
       };
-    }
-    else {
+    } else {
       current = {
         x: e.clientX,
         y: e.clientY,
@@ -161,7 +169,12 @@ const Coloring = () => {
 
     // show cursor
     if (contextCursor) {
-      contextCursor.clearRect(0, 0, canvasCursorRef.current.width, canvasCursorRef.current.height); // clear prev cursor
+      contextCursor.clearRect(
+        0,
+        0,
+        canvasCursorRef.current.width,
+        canvasCursorRef.current.height
+      ); // clear prev cursor
       contextCursor.beginPath();
       contextCursor.arc(offsetX, offsetY, brushSize, 0, 2 * Math.PI);
       contextCursor.fillStyle = color;
@@ -182,10 +195,15 @@ const Coloring = () => {
 
     // show cursor outlined
     if (contextCursor) {
-      contextCursor.clearRect(0, 0, canvasCursorRef.current.width, canvasCursorRef.current.height); // clear prev cursor
+      contextCursor.clearRect(
+        0,
+        0,
+        canvasCursorRef.current.width,
+        canvasCursorRef.current.height
+      ); // clear prev cursor
       contextCursor.beginPath();
       contextCursor.arc(offsetX, offsetY, brushSize, 0, 2 * Math.PI);
-      contextCursor.strokeStyle = "#454545";
+      contextCursor.strokeStyle = '#454545';
       contextCursor.stroke();
     }
 
@@ -193,7 +211,7 @@ const Coloring = () => {
     if (contextDrawing && isDragging) {
       contextDrawing.beginPath();
       contextDrawing.arc(offsetX, offsetY, brushSize, 0, 2 * Math.PI);
-      contextDrawing.fillStyle = "#FFFFFF";
+      contextDrawing.fillStyle = '#FFFFFF';
       contextDrawing.fill();
     }
   };
@@ -203,7 +221,7 @@ const Coloring = () => {
       if (isDragging) {
         const current = {
           x: e.clientX,
-          y: e.clientY
+          y: e.clientY,
         };
         setCameraOffset({
           x: current.x / scale - dragStartPoint.x,
@@ -220,7 +238,7 @@ const Coloring = () => {
 
   return (
     <>
-      <header className="bg-amber-400 p-3 space-x-1">
+      <header className='bg-amber-400 p-3 space-x-1'>
         <button onClick={setModeToPan}>
           <TbArrowsMove />
         </button>
@@ -233,7 +251,6 @@ const Coloring = () => {
         <button onClick={zoomIn}>
           <TbZoomIn />
         </button>
-        <span>{ }</span>
         <button onClick={zoomOut}>
           <TbZoomOut />
         </button>
@@ -241,8 +258,8 @@ const Coloring = () => {
           <TbMinus />
         </button>
         <input
-          type="range"
-          name="brushSize"
+          type='range'
+          name='brushSize'
           value={brushSize}
           min={1}
           max={50}
@@ -252,7 +269,7 @@ const Coloring = () => {
           <TbPlus />
         </button>
         <SketchPicker
-          className={isHidden ? "hidden" : "absolute z-50"}
+          className={isHidden ? 'hidden' : 'absolute z-50'}
           color={color}
           onChange={(color) => setBrushColor(color.hex)}
         />
@@ -260,34 +277,41 @@ const Coloring = () => {
           <MdColorLens />
         </button>
       </header>
-      <div className="bg-gray-200 flex">
-        <main className="relative bg-neutral-500 w-full h-[calc(100vh-3rem)] flex justify-center items-center">
-          <canvas ref={canvasBgRef}
+      <div className='bg-gray-200 flex'>
+        <main className='relative bg-neutral-500 w-full h-[calc(100vh-3rem)] flex justify-center items-center'>
+          <canvas
+            ref={canvasBgRef}
             className={styleOnCanvas()}
             onTouchStart={(e) => startDragging(e)}
             onMouseDown={(e) => startDragging(e)}
-
             onTouchMove={handleMouseMove()} // 실제 draw는 아래 캔버스에서 일어남
             onMouseMove={handleMouseMove()} // 이 캔버스가 위에 있으니까 mouse event handling을 여기서 해줌
-
             onTouchEnd={finishDragging}
             onMouseUp={finishDragging}
             onMouseLeave={finishDragging}
-
             onWheel={(e) => zoomWithWheel(e.deltaY * SCROLL_SENSITIVITY)}
           />
-          <canvas ref={canvasCursorRef}
-            className="absolute z-30" />
-          <canvas ref={canvasDrawingRef}
-            className="absolute z-20"
+          <canvas
+            ref={canvasCursorRef}
+            className='absolute z-30'
           />
-          {
-            canvasReady ?
-              <div style={{ width: canvasBgRef.current.width, height: canvasBgRef.current.height }} className="absolute bg-white z-10"></div>
-              : <></>
-          }
+          <canvas
+            ref={canvasDrawingRef}
+            className='absolute z-20'
+          />
+          {canvasReady ? (
+            <div
+              style={{
+                width: canvasBgRef.current.width,
+                height: canvasBgRef.current.height,
+              }}
+              className='absolute bg-white z-10'
+            ></div>
+          ) : (
+            <></>
+          )}
         </main>
-        <div className="bg-green-400 float-right">
+        <div className='bg-green-400 float-right'>
           <Chat />
         </div>
       </div>
@@ -297,16 +321,14 @@ const Coloring = () => {
   function styleOnCanvas() {
     switch (mode) {
       case PAN:
-        if (isDragging)
-          return "absolute cursor-grabbing z-40";
-        else
-          return "absolute cursor-grab z-40";
+        if (isDragging) return 'absolute cursor-grabbing z-40';
+        else return 'absolute cursor-grab z-40';
       case DRAW:
-        return "absolute cursor-none z-40";
+        return 'absolute cursor-none z-40';
       case ERASE:
-        return "absolute cursor-none z-40";
+        return 'absolute cursor-none z-40';
       default:
-        return "absolute z-40"
+        return 'absolute z-40';
     }
   }
 
@@ -320,6 +342,6 @@ const Coloring = () => {
         return erasing;
     }
   }
-}
+};
 
 export default Coloring;
